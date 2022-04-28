@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class GamePlayer : MonoBehaviourPunCallbacks
 {
-    [SerializeField]
-    private Projectile projectilePrefab = default;
-
     private ProjectileManager projectileManager;
+    // 弾を発射する時に使う弾のID
+    private int projectileId = 0;
 
     private void Awake()
     {
@@ -28,16 +27,33 @@ public class GamePlayer : MonoBehaviourPunCallbacks
                 var dp = mouseWorldPosition - playerWorldPosition;
                 float angle = Mathf.Atan2(dp.y, dp.x);
 
-                // FireProjectile(angle)をRPCで実行する
-                photonView.RPC(nameof(FireProjectile), RpcTarget.All, angle);
+                photonView.RPC(nameof(FireProjectile), RpcTarget.All, transform.position, angle);
             }
         }
     }
 
-    // [PunRPC]属性をつけると、RPCでの実行が有効になる
     [PunRPC]
-    private void FireProjectile(float angle)
+    private void FireProjectile(Vector3 origin, float angle, PhotonMessageInfo info)
     {
-        projectileManager.Fire(transform.position, angle);
+        int timestamp = info.SentServerTimestamp;
+        projectileManager.Fire(timestamp, photonView.OwnerActorNr, origin, angle, timestamp);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (photonView.IsMine)
+        {
+            var projectile = collision.GetComponent<Projectile>();
+            if (projectile != null && projectile.OwnerId != PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                photonView.RPC(nameof(HitByProjectile), RpcTarget.All, projectile.Id, projectile.OwnerId);
+            }
+        }
+    }
+
+    [PunRPC]
+    private void HitByProjectile(int projectileId, int ownerId)
+    {
+        projectileManager.Remove(projectileId, ownerId);
     }
 }

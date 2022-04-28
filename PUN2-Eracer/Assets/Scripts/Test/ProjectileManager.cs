@@ -4,16 +4,13 @@ using UnityEngine;
 public class ProjectileManager : MonoBehaviour
 {
     [SerializeField]
-    private Projectile projectilePrefab = default; // ProjectileのPrefabの参照
+    private Projectile projectilePrefab = default;
 
-    // アクティブな弾のリスト
     private List<Projectile> activeList = new List<Projectile>();
-    // 非アクティブな弾のオブジェクトプール
     private Stack<Projectile> inactivePool = new Stack<Projectile>();
 
     private void Update()
     {
-        // 逆順にループを回して、activeListの要素が途中で削除されても正しくループが回るようにする
         for (int i = activeList.Count - 1; i >= 0; i--)
         {
             var projectile = activeList[i];
@@ -28,22 +25,32 @@ public class ProjectileManager : MonoBehaviour
         }
     }
 
-    // 弾を発射（アクティブ化）するメソッド
-    public void Fire(Vector3 origin, float angle)
+    public void Fire(int id, int ownerId, Vector3 origin, float angle, int timestamp)
     {
-        // 非アクティブの弾があれば使い回す、なければ生成する
         var projectile = (inactivePool.Count > 0)
             ? inactivePool.Pop()
             : Instantiate(projectilePrefab, transform);
-        projectile.Activate(origin, angle);
+        projectile.Activate(id, ownerId, origin, angle, timestamp);
         activeList.Add(projectile);
     }
 
-    // 弾を消去（非アクティブ化）するメソッド
     public void Remove(Projectile projectile)
     {
         activeList.Remove(projectile);
         projectile.Deactivate();
         inactivePool.Push(projectile);
+    }
+
+    // IDから弾を消去するメソッド
+    public void Remove(int id, int ownerId)
+    {
+        foreach (var projectile in activeList)
+        {
+            if (projectile.Equals(id, ownerId))
+            {
+                Remove(projectile);
+                break;
+            }
+        }
     }
 }
