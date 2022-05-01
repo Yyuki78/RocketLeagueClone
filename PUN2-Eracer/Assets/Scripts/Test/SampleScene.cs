@@ -14,6 +14,8 @@ public class SampleScene : MonoBehaviourPunCallbacks
         PhotonNetwork.SerializationRate = 10; // 1秒間にオブジェクト同期を行う回数
 
         PhotonNetwork.UseRpcMonoBehaviourCache = true;//RPCのメソッドをキャッシュ
+
+        PhotonNetwork.LocalPlayer.NickName = "Player";
     }
 
     // マスターサーバーへの接続が成功した時に呼ばれるコールバック

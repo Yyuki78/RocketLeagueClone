@@ -1,15 +1,35 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
+using TMPro;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
+[RequireComponent(typeof(SpriteRenderer))]
 public class GamePlayer : MonoBehaviourPunCallbacks
 {
+    [SerializeField]
+    private TextMeshPro nameLabel = default;
+
     private ProjectileManager projectileManager;
-    // 弾を発射する時に使う弾のID
-    private int projectileId = 0;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         projectileManager = GameObject.FindWithTag("ProjectileManager").GetComponent<ProjectileManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        // プレイヤー名の横にスコアを表示する
+        int score = photonView.Owner.GetScore();
+        nameLabel.text = $"{photonView.Owner.NickName}({score.ToString()})";
+
+        // 色相値が設定されていたら、スプライトの色を変化させる
+        if (photonView.Owner.TryGetHue(out float hue))
+        {
+            spriteRenderer.color = Color.HSVToRGB(hue, 1f, 1f);
+        }
     }
 
     private void Update()
@@ -55,5 +75,32 @@ public class GamePlayer : MonoBehaviourPunCallbacks
     private void HitByProjectile(int projectileId, int ownerId)
     {
         projectileManager.Remove(projectileId, ownerId);
+
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.LocalPlayer.OnTakeDamage();
+        }
+        else if (ownerId == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            PhotonNetwork.LocalPlayer.OnDealDamage();
+        }
+    }
+
+    // プレイヤーのカスタムプロパティが更新された時に呼ばれるコールバック
+    public override void OnPlayerPropertiesUpdate(Player target, Hashtable changedProps)
+    {
+        if (target.ActorNumber != photonView.OwnerActorNr) { return; }
+
+        // スコアが更新されていたら、スコア表示も更新する
+        if (changedProps.TryGetScore(out int score))
+        {
+            nameLabel.text = $"{photonView.Owner.NickName}({score.ToString()})";
+        }
+
+        // 色相値が更新されていたら、スプライトの色を変化させる
+        if (changedProps.TryGetHue(out float hue))
+        {
+            spriteRenderer.color = Color.HSVToRGB(hue, 1f, 1f);
+        }
     }
 }
