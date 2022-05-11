@@ -68,7 +68,10 @@
     <Compile Include="Assets\Photon\PhotonLibs\WebSocket\WebSocket.cs" />
     <Compile Include="Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />
+    <Compile Include="Assets\Scripts\Test\GamePlayerManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerProperty.cs" />
+    <Compile Include="Assets\Scripts\Test\GameRoomHUD.cs" />
+    <Compile Include="Assets\Scripts\Test\GameRoomProperty.cs" />
     <Compile Include="Assets\Scripts\Test\Projectile.cs" />
     <Compile Include="Assets\Scripts\Test\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Test\SampleScene.cs" />

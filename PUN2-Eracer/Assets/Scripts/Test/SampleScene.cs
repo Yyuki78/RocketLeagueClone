@@ -22,7 +22,8 @@ public class SampleScene : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         // "room"という名前のルームに参加する（ルームが無ければ作成してから参加する）
-        PhotonNetwork.JoinOrCreateRoom("room", new RoomOptions(), TypedLobby.Default);
+        string displayName = $"{PhotonNetwork.NickName}の部屋";
+        PhotonNetwork.JoinOrCreateRoom("room", GameRoomProperty.CreateRoomOptions(displayName), TypedLobby.Default);
     }
 
     // マッチングが成功した時に呼ばれるコールバック
@@ -31,5 +32,23 @@ public class SampleScene : MonoBehaviourPunCallbacks
         // マッチング後、ランダムな位置に自分自身のネットワークオブジェクトを生成する
         var v = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f));
         PhotonNetwork.Instantiate("GamePlayer", v, Quaternion.identity);
+
+        // 現在のサーバー時刻を、ゲームの開始時刻に設定する
+        if (PhotonNetwork.IsMasterClient && !PhotonNetwork.CurrentRoom.HasStartTime())
+        {
+            PhotonNetwork.CurrentRoom.SetStartTime(PhotonNetwork.ServerTimestamp);
+        }
+    }
+
+    // 他プレイヤーが参加した時に呼ばれるコールバック
+    public override void OnPlayerEnteredRoom(Player player)
+    {
+        Debug.Log(player.NickName + "が参加しました");
+    }
+
+    // 他プレイヤーが退出した時に呼ばれるコールバック
+    public override void OnPlayerLeftRoom(Player player)
+    {
+        Debug.Log(player.NickName + "が退出しました");
     }
 }

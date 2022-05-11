@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bullet
   - ProjectileManager
+  - GamePlayerManager
   layers:
   - Default
   - TransparentFX

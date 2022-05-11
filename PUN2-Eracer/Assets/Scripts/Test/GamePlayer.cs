@@ -13,10 +13,15 @@ public class GamePlayer : MonoBehaviourPunCallbacks
     private ProjectileManager projectileManager;
     private SpriteRenderer spriteRenderer;
 
+    public Player Owner => photonView.Owner;
+
     private void Awake()
     {
         projectileManager = GameObject.FindWithTag("ProjectileManager").GetComponent<ProjectileManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        var gamePlayerManager = GameObject.FindWithTag("GamePlayerManager").GetComponent<GamePlayerManager>();
+        transform.SetParent(gamePlayerManager.transform);
     }
 
     private void Start()
