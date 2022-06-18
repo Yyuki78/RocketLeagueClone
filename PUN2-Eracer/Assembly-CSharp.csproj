@@ -55,8 +55,6 @@
   <ItemGroup>
     <Compile Include="Assets\Assets\CarbonConcept\Buggy\Rotation_TIRES.cs" />
     <Compile Include="Assets\Assets\CarbonConcept\Buggy\Rotation_forward.cs" />
-    <Compile Include="Assets\Assets\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Assets\Scripts\HoverCarControl.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
@@ -79,7 +77,16 @@
     <Compile Include="Assets\SampleScenes\Scripts\ParticleSceneControls.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
+    <Compile Include="Assets\Scripts\BodyTrigger.cs" />
+    <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\CarAirMove.cs" />
+    <Compile Include="Assets\Scripts\CarJumpMove.cs" />
     <Compile Include="Assets\Scripts\CarMove.cs" />
+    <Compile Include="Assets\Scripts\CarMove2.cs" />
+    <Compile Include="Assets\Scripts\CarState.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\HoverCarControl.cs" />
+    <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerProperty.cs" />
@@ -88,6 +95,9 @@
     <Compile Include="Assets\Scripts\Test\Projectile.cs" />
     <Compile Include="Assets\Scripts\Test\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Test\SampleScene.cs" />
+    <Compile Include="Assets\Scripts\WheelForce.cs" />
+    <Compile Include="Assets\Scripts\WheelForce2.cs" />
+    <Compile Include="Assets\Scripts\WheelTrigger.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -712,6 +722,9 @@
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
@@ -727,6 +740,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
     </Reference>
@@ -738,12 +754,6 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="Cinemachine">
-      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
-    </Reference>
-    <Reference Include="com.unity.cinemachine.editor">
-      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
