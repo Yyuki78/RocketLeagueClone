@@ -51,7 +51,7 @@ public class WheelTrigger : MonoBehaviour
 
     private void ApplyStickyForces2(float stickyForce, Vector3 position, Vector3 dir)
     {
-        Vector3 force = stickyForce * Mathf.Abs(_move.currentSteerAngle) / 4 / 4 * dir;//Mathf.Abs(_move.currentSteerAngle)/8倍
+        Vector3 force = stickyForce * 12*2 / 4 * dir;//Mathf.Abs(_move.currentSteerAngle)/8倍
 
         _rigidbody.AddForceAtPosition(force, position, ForceMode.Acceleration);
     }

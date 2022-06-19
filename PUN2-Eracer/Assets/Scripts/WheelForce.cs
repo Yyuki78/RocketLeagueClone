@@ -101,7 +101,7 @@ public class WheelForce : MonoBehaviour
     {
         Fy = _wheelLateralVelocity * _move.currentWheelSideFriction;
         _lateralForcePosition = transform.localPosition;
-        _lateralForcePosition.y = wheelMesh.localPosition.y;
+        _lateralForcePosition.y = wheelMesh.localPosition.y+0.1f;
 
         _lateralForcePosition = _move.transform.TransformPoint(_lateralForcePosition);
         _rigidbody.AddForceAtPosition(-Fy * transform.right, _lateralForcePosition, ForceMode.Acceleration);
@@ -113,8 +113,8 @@ public class WheelForce : MonoBehaviour
         //Applies auto braking if no input, simulates air and ground drag
         if (!(_move.forwardSpeedAbs >= 0.1)) return;
         
-        //半分
-        var dragForce = AutoBrakeAcceleration / 8 * _move.forwardSpeedSign * (1 - Mathf.Abs(GameManager.InputManager.throttleInput));
+        //1/8
+        var dragForce = AutoBrakeAcceleration / 32 * _move.forwardSpeedSign * (1 - Mathf.Abs(GameManager.InputManager.throttleInput));
         _rigidbody.AddForce(-dragForce * transform.forward, ForceMode.Acceleration);
     }
     

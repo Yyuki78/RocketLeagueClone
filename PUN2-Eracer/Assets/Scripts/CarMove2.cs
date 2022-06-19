@@ -16,7 +16,7 @@ public class CarMove2 : MonoBehaviour
 
     //ブースト
     private float BoostForceMultiplier = 1f;
-    const float BoostForce = 991*8 / 100;//8倍
+    const float BoostForce = 991*7 / 100;//7倍
     private const float MaxSpeedBoost = 4600 / 100;//2倍
 
     Rigidbody _rigidbody;
@@ -45,6 +45,11 @@ public class CarMove2 : MonoBehaviour
             DownForce2();
         }
 
+        if (Vector3.Dot(Vector3.up, transform.up) < 0.98f && transform.position.y < 3.75f && _state.SomeWheelHit && !_state.IsDrive)
+        {
+            DownForce3();
+        }
+
         UpdateCarVariables();
 
         SetDriftFriction();
@@ -54,17 +59,7 @@ public class CarMove2 : MonoBehaviour
         ApplyForwardForce(forwardAcceleration);
 
         currentSteerAngle = CalculateSteerAngle();
-        if (Mathf.Abs(currentSteerAngle) > 23.5f)
-        {
-            if (currentSteerAngle < 0)
-            {
-                //currentSteerAngle = -23.5f;
-            }
-            else
-            {
-                //currentSteerAngle = 23.5f;
-            }
-        }
+
         ApplyWheelRotation(currentSteerAngle);
 
     }
@@ -90,6 +85,13 @@ public class CarMove2 : MonoBehaviour
         }
     }
 
+    private void DownForce3()
+    {
+        if (this.transform.position.y > 43f) return;
+        if (_state._states == CarState.CarStates.Air) return;
+        _rigidbody.AddForce(-transform.up * 5 * 5*5*2, ForceMode.Acceleration);
+    }
+
     //車の下方向への重力　使い方↓
     //一個のタイヤが地面と接触している時に即座に体勢を立て直す
     private void DownForce2()
@@ -103,7 +105,7 @@ public class CarMove2 : MonoBehaviour
     {
         if (this.transform.position.y > 43f) return;
         if (_state.IsDrive)
-            _rigidbody.AddForce(-transform.up * 10 * 4 / 5, ForceMode.Acceleration);
+            _rigidbody.AddForce(-transform.up * 4 / 5, ForceMode.Acceleration);
 
         //if (GameManager.InputManager.isBoost && forwardSpeed < MaxSpeedBoost)
             //_rigidbody.AddForce(-transform.up * _rigidbody.velocity.magnitude * 4 / 5, ForceMode.Acceleration);
@@ -165,7 +167,7 @@ public class CarMove2 : MonoBehaviour
     {
         if (_state.IsDrive && GameManager.InputManager.isBoost == false)
         {
-            _rigidbody.AddForce(force * 4*1.5f * transform.forward, ForceMode.Acceleration);
+            _rigidbody.AddForce(force * 4 * transform.forward, ForceMode.Acceleration);
 
             // Kill velocity to 0 for small car velocities
             if (force == 0 && forwardSpeedAbs < 0.1)
@@ -183,7 +185,7 @@ public class CarMove2 : MonoBehaviour
         {
             //TODO: Func. call like this below OR Wheel class fetches data from this class?
             // Also probably should be an interface to a concrete implementation. Same for the NaiveGroundControl below.
-            wheel.RotateWheels(steerAngle/2);
+            wheel.RotateWheels(steerAngle);
         }
     }
 
@@ -244,9 +246,9 @@ public class CarMove2 : MonoBehaviour
         if (speed > (1410 * 2 / 100))
             throttle = 0;
         else if (speed > (1400 * 2 / 100))
-            throttle = CarMove2.Scale(14 * 2, 14.1f * 2, 1.6f * 2, 0, speed);
+            throttle = CarMove2.Scale(14, 14.1f, 1.6f, 0, speed);
         else if (speed <= (1400 * 2 / 100))
-            throttle = CarMove2.Scale(0, 14 * 2, 16 * 2, 1.6f * 2, speed);
+            throttle = CarMove2.Scale(0, 14, 16, 1.6f, speed);
 
         return throttle;
     }
@@ -257,35 +259,38 @@ public class CarMove2 : MonoBehaviour
         float forwardSpeed = Mathf.Abs(speed);
         float turnRadius = 0;
 
-        float DebugRad = 2f;
-
+        float DebugRad = 1.75f;
+        /*
         var curvature = CarMove2.Scale(0, 5 * DebugRad, 0.00225f * DebugRad, 0.0015f * DebugRad, forwardSpeed);
         //全部2倍
         if (forwardSpeed >= 500 * 2 / 100)
             curvature = CarMove2.Scale(5 * DebugRad, 10 * DebugRad, 0.00225f * DebugRad, 0.0015f * DebugRad, forwardSpeed);
 
         if (forwardSpeed >= 1000 * 2 / 100)
-            curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.0025f * DebugRad, 0.00175f * DebugRad, forwardSpeed);
+            curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.00225f * DebugRad, 0.00175f * DebugRad, forwardSpeed);
 
         if (forwardSpeed >= 1500 * 2 / 100)
             curvature = CarMove2.Scale(15 * DebugRad, 20 * DebugRad, 0.00175f * DebugRad, 0.001f * DebugRad, forwardSpeed);
 
         if (forwardSpeed >= 2000 * 2 / 100)
-            curvature = CarMove2.Scale(20 * DebugRad, 23 * DebugRad, 0.0025f * DebugRad, 0.0015f * DebugRad, forwardSpeed);
-        /*
+            curvature = CarMove2.Scale(20 * DebugRad, 23 * DebugRad, 0.00125f * DebugRad, 0.001f * DebugRad, forwardSpeed);
+        */
         var curvature = CarMove2.Scale(0, 5 * DebugRad, 0.0069f * DebugRad, 0.00398f * DebugRad, forwardSpeed);
         //全部2倍
         if (forwardSpeed >= 500 * 2 / 100)
             curvature = CarMove2.Scale(5 * DebugRad, 10 * DebugRad, 0.00398f * DebugRad, 0.00235f * DebugRad, forwardSpeed);
 
         if (forwardSpeed >= 1000 * 2 / 100)
-            curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.00235f * DebugRad, 0.001375f * DebugRad, forwardSpeed);
-        //if (forwardSpeed >= 1500 * 2 / 100)
-        //curvature = CarMove2.Scale(15 * 2, 17.5f * 2, 0.001375f * 2, 0.0011f * 2, forwardSpeed);
+            curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.00215f * DebugRad, 0.001375f * DebugRad, forwardSpeed);
+        if (forwardSpeed >= 1500 * 2 / 100)
+            curvature = CarMove2.Scale(15 * DebugRad, 20 * DebugRad, 0.000575f* 1.1f * DebugRad, 0.000570f * 1.1f * DebugRad, forwardSpeed);
+
+        if (forwardSpeed >= 2000 * 2 / 100)
+            curvature = CarMove2.Scale(20 * DebugRad, 23 * DebugRad, 0.00055f * 1.1f * DebugRad, 0.000525f * 1.1f * DebugRad, forwardSpeed);
 
         //if (forwardSpeed >= 1750 * 2 / 100)
-        //curvature = CarMove2.Scale(17.5f * 2, 23 * 2, 0.0011f * 2, 0.00088f * 2, forwardSpeed);
-        */
+        //curvature = CarMove2.Scale(17.5f * DebugRad, 23 * DebugRad, 0.0011f * DebugRad, 0.00088f * DebugRad, forwardSpeed);
+
         turnRadius = 1 / (curvature * 100);
 
         /*
