@@ -29,6 +29,7 @@ public class CarState : MonoBehaviour
     private float _rayLen, _rayOffset = 0.25f;
 
     private Rigidbody _rigidbody;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -38,7 +39,7 @@ public class CarState : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         Debug.Log(_rigidbody.centerOfMass);
         //0,-0.2,-0.1   元々は0,0.8,-0.2
-        _rigidbody.centerOfMass = new Vector3(0f, -0.2f, -0.2f);
+        _rigidbody.centerOfMass = new Vector3(0f, 0.45f, -0.1f);
         _rigidbody.maxAngularVelocity = 5.5f;
 
         _rayLen = transform.localScale.x / 2 + _rayOffset;

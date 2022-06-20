@@ -16,12 +16,13 @@ public class CarMove2 : MonoBehaviour
 
     //ブースト
     private float BoostForceMultiplier = 1f;
-    const float BoostForce = 991*7 / 100;//7倍
-    private const float MaxSpeedBoost = 4600 / 100;//2倍
+    const float BoostForce = 991*3.25f / 100;//3倍
+    private const float MaxSpeedBoost = 2300 / 100;//1倍
 
     Rigidbody _rigidbody;
     CarState _state;
     WheelForce[] _wheelForce;
+    [SerializeField] Transform _rotateObj;
 
     void Start()
     {
@@ -32,6 +33,9 @@ public class CarMove2 : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //重力をかけるかかけないか
+        //Gravity();
+
         //Steering();
 
         //ブースト
@@ -55,13 +59,32 @@ public class CarMove2 : MonoBehaviour
         SetDriftFriction();
 
         var forwardAcceleration = CalcForwardForce(GameManager.InputManager.throttleInput);
-        //ApplyWheelForwardForce(forwardAcceleration);
-        ApplyForwardForce(forwardAcceleration);
+        ApplyWheelForwardForce(forwardAcceleration);
+        //ApplyForwardForce(forwardAcceleration);
 
         currentSteerAngle = CalculateSteerAngle();
 
         ApplyWheelRotation(currentSteerAngle);
 
+    }
+
+    private void Gravity()
+    {
+        if (GameManager.InputManager.throttleInput > 0 || GameManager.InputManager.isBoost)
+        {
+            if (_state.IsDrive)
+            {
+                _rigidbody.useGravity = false;
+            }
+            else
+            {
+                _rigidbody.useGravity = true;
+            }
+        }
+        else
+        {
+            _rigidbody.useGravity = true;
+        }
     }
 
     /*void Steering()
@@ -104,8 +127,10 @@ public class CarMove2 : MonoBehaviour
     private void DownForce()
     {
         if (this.transform.position.y > 43f) return;
+        var pos = transform.position;
+        pos.y = transform.position.y - 0.2f;
         if (_state.IsDrive)
-            _rigidbody.AddForce(-transform.up * 4 / 5, ForceMode.Acceleration);
+            _rigidbody.AddForceAtPosition(-transform.up * 4 / 5, pos, ForceMode.Acceleration);
 
         //if (GameManager.InputManager.isBoost && forwardSpeed < MaxSpeedBoost)
             //_rigidbody.AddForce(-transform.up * _rigidbody.velocity.magnitude * 4 / 5, ForceMode.Acceleration);
@@ -138,17 +163,21 @@ public class CarMove2 : MonoBehaviour
             //turnRadiusCoefficient = 50;
         }
     }
-    /*
+    
     //タイヤに渡して移動する
     private void ApplyWheelForwardForce(float forwardAcceleration)
     {
+        /*
         if (_state.IsDrive && GameManager.InputManager.isBoost == false)
         {
             //wheel.ApplyForwardForce(forwardAcceleration / 4);
             _rigidbody.AddForce(forwardAcceleration * 4*4 * transform.forward, ForceMode.Acceleration);
             //16倍
-        }
-        // Apply forces to each wheel
+        }*/
+
+        if (_state.SomeWheelHit && !_state.IsDrive) return;
+
+        //それぞれのタイヤに渡して移動させる
         foreach (var wheel in _wheelForce)
         {
             //TODO: Func. call like this below OR Wheel class fetches data from this class?
@@ -156,12 +185,12 @@ public class CarMove2 : MonoBehaviour
             if (_state.IsDrive && GameManager.InputManager.isBoost == false)
             {
                 //wheel.ApplyForwardForce(forwardAcceleration / 4);
-                wheel.ApplyForwardForce(forwardAcceleration*4);
+                wheel.ApplyForwardForce(forwardAcceleration*1.5f);
                 //16倍
             }
         }
-    }*/
-
+    }
+    /*
     //前後に移動する
     public void ApplyForwardForce(float force)
     {
@@ -173,12 +202,23 @@ public class CarMove2 : MonoBehaviour
             if (force == 0 && forwardSpeedAbs < 0.1)
                 _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _rigidbody.velocity.y, 0);
         }
-    }
+    }*/
 
     //タイヤ自体を回して方向転換する
     private void ApplyWheelRotation(float steerAngle)
     {
         if (!_state.IsDrive) return;
+
+        if (steerAngle < -1)
+        {
+            _rigidbody.AddTorque(transform.up * -10f, ForceMode.Acceleration);
+            //_rotateObj.localEulerAngles += new Vector3(0, -1f, 0);
+        }
+        else if(steerAngle > 1)
+        {
+            _rigidbody.AddTorque(transform.up * 10f, ForceMode.Acceleration);
+            //_rotateObj.localEulerAngles += new Vector3(0, 1f, 0);
+        }
 
         // Apply steer angle to each wheel
         foreach (var wheel in _wheelForce)
@@ -241,13 +281,20 @@ public class CarMove2 : MonoBehaviour
         // Replicates acceleration curve from RL, depends on current car forward velocity
         speed = Mathf.Abs(speed);
         float throttle = 0;
-
+        /*
         //全部2倍
         if (speed > (1410 * 2 / 100))
             throttle = 0;
         else if (speed > (1400 * 2 / 100))
             throttle = CarMove2.Scale(14, 14.1f, 1.6f, 0, speed);
         else if (speed <= (1400 * 2 / 100))
+            throttle = CarMove2.Scale(0, 14, 16, 1.6f, speed);
+        */
+        if (speed > (1410 / 100))
+            throttle = 0;
+        else if (speed > (1400 / 100))
+            throttle = CarMove2.Scale(14, 14.1f, 1.6f, 0, speed);
+        else if (speed <= (1400 / 100))
             throttle = CarMove2.Scale(0, 14, 16, 1.6f, speed);
 
         return throttle;
@@ -259,34 +306,35 @@ public class CarMove2 : MonoBehaviour
         float forwardSpeed = Mathf.Abs(speed);
         float turnRadius = 0;
 
-        float DebugRad = 1.75f;
+        float DebugRad = 1f;
         /*
         var curvature = CarMove2.Scale(0, 5 * DebugRad, 0.00225f * DebugRad, 0.0015f * DebugRad, forwardSpeed);
-        //全部2倍
-        if (forwardSpeed >= 500 * 2 / 100)
+
+        if (forwardSpeed >= 500 / 100)
             curvature = CarMove2.Scale(5 * DebugRad, 10 * DebugRad, 0.00225f * DebugRad, 0.0015f * DebugRad, forwardSpeed);
 
-        if (forwardSpeed >= 1000 * 2 / 100)
+        if (forwardSpeed >= 1000 / 100)
             curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.00225f * DebugRad, 0.00175f * DebugRad, forwardSpeed);
 
-        if (forwardSpeed >= 1500 * 2 / 100)
+        if (forwardSpeed >= 1500 / 100)
             curvature = CarMove2.Scale(15 * DebugRad, 20 * DebugRad, 0.00175f * DebugRad, 0.001f * DebugRad, forwardSpeed);
 
-        if (forwardSpeed >= 2000 * 2 / 100)
+        if (forwardSpeed >= 2000 / 100)
             curvature = CarMove2.Scale(20 * DebugRad, 23 * DebugRad, 0.00125f * DebugRad, 0.001f * DebugRad, forwardSpeed);
         */
+
         var curvature = CarMove2.Scale(0, 5 * DebugRad, 0.0069f * DebugRad, 0.00398f * DebugRad, forwardSpeed);
-        //全部2倍
-        if (forwardSpeed >= 500 * 2 / 100)
+
+        if (forwardSpeed >= 500 * 1 / 100)
             curvature = CarMove2.Scale(5 * DebugRad, 10 * DebugRad, 0.00398f * DebugRad, 0.00235f * DebugRad, forwardSpeed);
 
-        if (forwardSpeed >= 1000 * 2 / 100)
+        if (forwardSpeed >= 1000 * 1 / 100)
             curvature = CarMove2.Scale(10 * DebugRad, 15 * DebugRad, 0.00215f * DebugRad, 0.001375f * DebugRad, forwardSpeed);
-        if (forwardSpeed >= 1500 * 2 / 100)
-            curvature = CarMove2.Scale(15 * DebugRad, 20 * DebugRad, 0.000575f* 1.1f * DebugRad, 0.000570f * 1.1f * DebugRad, forwardSpeed);
+        if (forwardSpeed >= 1500 * 1 / 100)
+            curvature = CarMove2.Scale(15 * DebugRad, 17.5f * DebugRad, 0.001375f * DebugRad, 0.0011f * DebugRad, forwardSpeed);
 
-        if (forwardSpeed >= 2000 * 2 / 100)
-            curvature = CarMove2.Scale(20 * DebugRad, 23 * DebugRad, 0.00055f * 1.1f * DebugRad, 0.000525f * 1.1f * DebugRad, forwardSpeed);
+        if (forwardSpeed >= 1750 / 100)
+            curvature = CarMove2.Scale(17.5f * DebugRad, 23 * DebugRad, 0.0011f * DebugRad, 0.00088f * DebugRad, forwardSpeed);
 
         //if (forwardSpeed >= 1750 * 2 / 100)
         //curvature = CarMove2.Scale(17.5f * DebugRad, 23 * DebugRad, 0.0011f * DebugRad, 0.00088f * DebugRad, forwardSpeed);

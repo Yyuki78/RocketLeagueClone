@@ -41,7 +41,6 @@ public class WheelForce : MonoBehaviour
     {
         if (wheelFL || wheelFR)
         {
-            if (Mathf.Abs(steerAngle) > 23f) return;
             transform.localRotation = Quaternion.Euler(Vector3.up * steerAngle);
         }
         
@@ -101,7 +100,7 @@ public class WheelForce : MonoBehaviour
     {
         Fy = _wheelLateralVelocity * _move.currentWheelSideFriction;
         _lateralForcePosition = transform.localPosition;
-        _lateralForcePosition.y = wheelMesh.localPosition.y+0.1f;
+        _lateralForcePosition.y = wheelMesh.localPosition.y-0.1f;
 
         _lateralForcePosition = _move.transform.TransformPoint(_lateralForcePosition);
         _rigidbody.AddForceAtPosition(-Fy * transform.right, _lateralForcePosition, ForceMode.Acceleration);
