@@ -52,6 +52,8 @@ public class CarMove3 : MonoBehaviour
     public float Revs { get; private set; }
     public float AccelInput { get; private set; }
 
+    CarState _state;
+
     // Use this for initialization
     private void Start()
     {
@@ -66,6 +68,19 @@ public class CarMove3 : MonoBehaviour
 
         m_Rigidbody = GetComponent<Rigidbody>();
         m_CurrentTorque = m_FullTorqueOverAllWheels - (m_TractionControl * m_FullTorqueOverAllWheels);
+
+        _state = GetComponent<CarState>();
+    }
+
+    private void FixedUpdate()
+    {
+        float h = GameManager.InputManager.steerInput;
+        float v = GameManager.InputManager.throttleInput;
+        float handbrake = 0;
+        if (_state.IsDrive)
+        {
+            Move(h, v, v, handbrake);
+        }
     }
 
 
@@ -254,8 +269,11 @@ public class CarMove3 : MonoBehaviour
     // this is used to add more grip in relation to speed
     private void AddDownForce()
     {
+        /*
         m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up * m_Downforce * 5 *
                                                      m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
+        */
+        m_Rigidbody.AddForce(-transform.up * m_Downforce * 5);
     }
 
     // crude traction control that reduces the power to wheel if the car is wheel spinning too much

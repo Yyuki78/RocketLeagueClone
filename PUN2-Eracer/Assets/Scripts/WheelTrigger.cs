@@ -30,12 +30,13 @@ public class WheelTrigger : MonoBehaviour
     private void FixedUpdate()
     {
         Hitting = IsRayContact() || HittingCol;
-
-        if (Hitting/* && _state.IsDrive*/)
+        
+        if (Hitting)
             ApplyStickyForces(StickyForceConstant * 5, _rayContactPoint, -_rayContactNormal);
-
+        /*
         if (!Hitting && _state.SomeWheelHit && Vector3.Dot(Vector3.up, transform.up) > 8f)
             StartCoroutine(ApplyStickyForces3(StickyForceConstant * 5));
+        */
         //ApplyStickyForces2(StickyForceConstant * 5);
     }
 
@@ -44,7 +45,7 @@ public class WheelTrigger : MonoBehaviour
     private void ApplyStickyForces(float stickyForce, Vector3 position, Vector3 dir)
     {
         //Vector3 force = stickyForce * Mathf.Abs(_move.currentSteerAngle) / 4 / 4 * dir * Mathf.Abs(_move.forwardSpeed) / 20;//Mathf.Abs(_move.currentSteerAngle)/4倍 +  Mathf.Abs(_move.forwardSpeed) / 20倍
-        Vector3 force = stickyForce * 2f / 4 * dir;
+        Vector3 force = stickyForce * 0.3f / 4 * dir;
         //if (GameManager.InputManager.isDrift) force = force * 2;
 
         _rigidbody.AddForceAtPosition(force, position, ForceMode.Acceleration);
