@@ -10,8 +10,10 @@ public class CarAirMove : MonoBehaviour
 
     Rigidbody _rb;
     CarState _state;
+    CarMove3 _move;
 
-    private float DebugF = 5f;
+    private float BoostVal = 10;
+    private float DebugF = 2f;
 
     #region Torque Coefficients for rotation and drag
     const float Tr = 36.07956616966136f; // torque coefficient for roll
@@ -26,6 +28,7 @@ public class CarAirMove : MonoBehaviour
     {
         _rb = GetComponentInParent<Rigidbody>();
         _state = GetComponent<CarState>();
+        _move = GetComponent<CarMove3>();
     }
 
     void Update()
@@ -44,6 +47,12 @@ public class CarAirMove : MonoBehaviour
     private void FixedUpdate()
     {
         if (_state.IsDrive) return;
+
+        //AirBoost
+        if (GameManager.InputManager.isBoost && _rb.velocity.magnitude < _move.m_Topspeed)
+        {
+            _rb.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
+        }
 
         // roll
         _rb.AddTorque(Tr * _inputRoll * transform.forward / DebugF, ForceMode.Acceleration);

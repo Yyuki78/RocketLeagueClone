@@ -37,9 +37,6 @@ public class CarState : MonoBehaviour
         _wtrigger = GetComponentsInChildren<WheelTrigger>();
 
         _rigidbody = GetComponent<Rigidbody>();
-        Debug.Log(_rigidbody.centerOfMass);
-        //0,-0.2,-0.1   元々は0,0.8,-0.2
-        //_rigidbody.centerOfMass = new Vector3(0f, 0.45f, -0.1f);
         _rigidbody.maxAngularVelocity = 5.5f;
 
         _rayLen = transform.localScale.x / 2 + _rayOffset;
@@ -49,6 +46,7 @@ public class CarState : MonoBehaviour
     void FixedUpdate()
     {
         ChangeState();
+        AddDownForce();
     }
 
     //タイヤと地面の接触判定
@@ -72,7 +70,7 @@ public class CarState : MonoBehaviour
         //地面にいる
         if (BodyHitting == false && WheelHittingNum >= 3)
         {
-            //_states = CarStates.IsGround;
+            _states = CarStates.IsGround;
         }
 
         //地面に付きかけor体勢崩しor飛びかけ
@@ -127,5 +125,15 @@ public class CarState : MonoBehaviour
         }
 
         WheelHittingNum = 0;
+    }
+
+    //地面と車をくっつける用
+    //CarMove側でWheelColliderと一緒にAddForceを使うと無効化されるバグがあるため避難
+    private void AddDownForce()
+    {
+        //ドライブ可能でないor逆さまなら無効
+        if (!IsDrive) return;
+        if (Vector3.Dot(-Vector3.up, transform.up) > 0.98f) return;
+        _rigidbody.AddForce(-transform.up * 100*5);
     }
 }

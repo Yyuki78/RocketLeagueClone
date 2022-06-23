@@ -44,6 +44,7 @@ public class WheelTrigger : MonoBehaviour
     const int StickyForceConstant = 325 / 100;
     private void ApplyStickyForces(float stickyForce, Vector3 position, Vector3 dir)
     {
+        if (Vector3.Dot(-Vector3.up, transform.up) > 0.98f) return;
         //Vector3 force = stickyForce * Mathf.Abs(_move.currentSteerAngle) / 4 / 4 * dir * Mathf.Abs(_move.forwardSpeed) / 20;//Mathf.Abs(_move.currentSteerAngle)/4倍 +  Mathf.Abs(_move.forwardSpeed) / 20倍
         Vector3 force = stickyForce * 0.3f / 4 * dir;
         //if (GameManager.InputManager.isDrift) force = force * 2;

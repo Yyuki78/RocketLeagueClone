@@ -1,13 +1,6 @@
 ﻿using System;
 using UnityEngine;
 
-internal enum CarDriveType
-{
-    FrontWheelDrive,
-    RearWheelDrive,
-    FourWheelDrive
-}
-
 internal enum SpeedType
 {
     MPH,
@@ -16,7 +9,6 @@ internal enum SpeedType
 
 public class CarMove3 : MonoBehaviour
 {
-    [SerializeField] private CarDriveType m_CarDriveType = CarDriveType.FourWheelDrive;
     [SerializeField] private WheelCollider[] m_WheelColliders = new WheelCollider[4];
     [SerializeField] private GameObject[] m_WheelMeshes = new GameObject[4];
     [SerializeField] private Vector3 m_CentreOfMassOffset;
@@ -28,7 +20,7 @@ public class CarMove3 : MonoBehaviour
     [SerializeField] private float m_MaxHandbrakeTorque;
     [SerializeField] private float m_Downforce = 100f;
     [SerializeField] private SpeedType m_SpeedType;
-    [SerializeField] private float m_Topspeed = 200;
+    public float m_Topspeed = 200;
     [SerializeField] private static int NoOfGears = 5;
     [SerializeField] private float m_RevRangeBoundary = 1f;
     [SerializeField] private float m_SlipLimit;
@@ -147,6 +139,7 @@ public class CarMove3 : MonoBehaviour
             m_WheelColliders[i].GetWorldPose(out position, out quat);
             m_WheelMeshes[i].transform.position = position;
             m_WheelMeshes[i].transform.rotation = quat;
+            m_WheelMeshes[i].transform.rotation = m_WheelMeshes[i].transform.rotation *new Quaternion(90, 90, 0, 0);
         }
 
         //clamp input values
@@ -155,24 +148,16 @@ public class CarMove3 : MonoBehaviour
         BrakeInput = footbrake = -1 * Mathf.Clamp(footbrake, -1, 0);
         handbrake = Mathf.Clamp(handbrake, 0, 1);
 
-        //Set the steer on the front wheels.
-        //Assuming that wheels 0 and 1 are the front wheels.
-        m_SteerAngle = steering * m_MaximumSteerAngle;
-        m_WheelColliders[0].steerAngle = m_SteerAngle;
-        m_WheelColliders[1].steerAngle = m_SteerAngle;
+        Steering(steering);
 
         SteerHelper();
         ApplyDrive(accel, footbrake);
-        CapSpeed();
+        ApplyBrake(BrakeInput);
 
-        //Set the handbrake.
-        //Assuming that wheels 2 and 3 are the rear wheels.
-        if (handbrake > 0f)
-        {
-            var hbTorque = handbrake * m_MaxHandbrakeTorque;
-            m_WheelColliders[2].brakeTorque = hbTorque;
-            m_WheelColliders[3].brakeTorque = hbTorque;
-        }
+        GroundBoosting();
+        //AirBoostingはCarAirMove
+
+        CapSpeed();
 
 
         CalculateRevs();
@@ -206,28 +191,14 @@ public class CarMove3 : MonoBehaviour
 
     private void ApplyDrive(float accel, float footbrake)
     {
+        if (GameManager.InputManager.isBoost) return;
 
         float thrustTorque;
-        switch (m_CarDriveType)
+
+        thrustTorque = accel * (m_CurrentTorque / 4f);
+        for (int i = 0; i < 4; i++)
         {
-            case CarDriveType.FourWheelDrive:
-                thrustTorque = accel * (m_CurrentTorque / 4f);
-                for (int i = 0; i < 4; i++)
-                {
-                    m_WheelColliders[i].motorTorque = thrustTorque;
-                }
-                break;
-
-            case CarDriveType.FrontWheelDrive:
-                thrustTorque = accel * (m_CurrentTorque / 2f);
-                m_WheelColliders[0].motorTorque = m_WheelColliders[1].motorTorque = thrustTorque;
-                break;
-
-            case CarDriveType.RearWheelDrive:
-                thrustTorque = accel * (m_CurrentTorque / 2f);
-                m_WheelColliders[2].motorTorque = m_WheelColliders[3].motorTorque = thrustTorque;
-                break;
-
+            m_WheelColliders[i].motorTorque = thrustTorque;
         }
 
         for (int i = 0; i < 4; i++)
@@ -242,6 +213,51 @@ public class CarMove3 : MonoBehaviour
                 m_WheelColliders[i].motorTorque = -m_ReverseTorque * footbrake;
             }
         }
+    }
+
+    private void ApplyBrake(float footbrake)
+    {
+        //Set the handbrake.
+        //Assuming that wheels 2 and 3 are the rear wheels.
+        if (footbrake > 0f)
+        {
+            var fbTorque = -footbrake * m_BrakeTorque / 4;
+            for (int i = 0; i < 4; i++)
+            {
+                m_WheelColliders[i].motorTorque = fbTorque;
+            }
+        }
+    }
+
+    private void GroundBoosting()
+    {
+        if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed)
+        {
+            if (_state.IsDrive)
+            {
+                //m_Rigidbody.AddForce(20 * transform.forward, ForceMode.Acceleration);
+                for (int i = 0; i < 4; i++)
+                {
+                    m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 2;
+                }
+            }
+        }
+    }
+
+    private void Steering(float steering)
+    {
+        m_SteerAngle = steering * m_MaximumSteerAngle;
+        if (steering > 0.5f)
+        {
+            m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 5);
+        }
+        else if (steering < -0.5f)
+        {
+            m_SteerAngle += ((m_Rigidbody.velocity.magnitude) / 5);
+        }
+        
+        m_WheelColliders[0].steerAngle = m_SteerAngle;
+        m_WheelColliders[1].steerAngle = m_SteerAngle;
     }
 
 
@@ -273,40 +289,23 @@ public class CarMove3 : MonoBehaviour
         m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up * m_Downforce * 5 *
                                                      m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
         */
-        m_Rigidbody.AddForce(-transform.up * m_Downforce * 5);
+        m_Rigidbody.AddForce(-transform.up * m_Downforce);
+        if (_state.SomeWheelHit && !_state.IsDrive)
+        {
+            m_Rigidbody.AddForce(-transform.up * m_Downforce * 5);
+        }
     }
 
     // crude traction control that reduces the power to wheel if the car is wheel spinning too much
     private void TractionControl()
     {
         WheelHit wheelHit;
-        switch (m_CarDriveType)
+
+        for (int i = 0; i < 4; i++)
         {
-            case CarDriveType.FourWheelDrive:
-                // loop through all wheels
-                for (int i = 0; i < 4; i++)
-                {
-                    m_WheelColliders[i].GetGroundHit(out wheelHit);
+            m_WheelColliders[i].GetGroundHit(out wheelHit);
 
-                    AdjustTorque(wheelHit.forwardSlip);
-                }
-                break;
-
-            case CarDriveType.RearWheelDrive:
-                m_WheelColliders[2].GetGroundHit(out wheelHit);
-                AdjustTorque(wheelHit.forwardSlip);
-
-                m_WheelColliders[3].GetGroundHit(out wheelHit);
-                AdjustTorque(wheelHit.forwardSlip);
-                break;
-
-            case CarDriveType.FrontWheelDrive:
-                m_WheelColliders[0].GetGroundHit(out wheelHit);
-                AdjustTorque(wheelHit.forwardSlip);
-
-                m_WheelColliders[1].GetGroundHit(out wheelHit);
-                AdjustTorque(wheelHit.forwardSlip);
-                break;
+            AdjustTorque(wheelHit.forwardSlip);
         }
     }
 

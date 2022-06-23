@@ -5252,13 +5252,13 @@ WheelCollider:
   m_WheelDampingRate: 50
   m_ForwardFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 1.5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 1.5
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 20
+    m_ExtremumValue: 30
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
@@ -12556,13 +12556,13 @@ WheelCollider:
   m_WheelDampingRate: 50
   m_ForwardFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 1.5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 1.5
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 20
+    m_ExtremumValue: 30
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
@@ -13840,13 +13840,13 @@ WheelCollider:
   m_WheelDampingRate: 50
   m_ForwardFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 1.5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 1.5
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 20
+    m_ExtremumValue: 30
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
@@ -25667,13 +25667,13 @@ WheelCollider:
   m_WheelDampingRate: 50
   m_ForwardFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 1.5
+    m_ExtremumValue: 3
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 1.5
     m_Stiffness: 1
   m_SidewaysFriction:
     m_ExtremumSlip: 1
-    m_ExtremumValue: 20
+    m_ExtremumValue: 30
     m_AsymptoteSlip: 1
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
@@ -26207,8 +26207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ae4f52674e2f43a0d388358d7ba22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForceMultiplier: 1
-  upForce: 3
+  jumpForceMultiplier: 0.4
+  upForce: 1
   upTorque: 50
   _isCanFirstJump: 0
   _isCanKeepJumping: 0
@@ -26237,7 +26237,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c685d89898135744c92897a4bc42e4d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CarDriveType: 2
   m_WheelColliders:
   - {fileID: 1818038967}
   - {fileID: 661915670}
@@ -26248,7 +26247,7 @@ MonoBehaviour:
   - {fileID: 2944343203323860699}
   - {fileID: 2228491308489359113}
   - {fileID: 6814366285091560261}
-  m_CentreOfMassOffset: {x: 0, y: 0, z: 0}
+  m_CentreOfMassOffset: {x: 0, y: -0.1, z: 0}
   m_MaximumSteerAngle: 12.5
   m_SteerHelper: 0.644
   m_TractionControl: 0
@@ -26257,10 +26256,10 @@ MonoBehaviour:
   m_MaxHandbrakeTorque: 100000000
   m_Downforce: 100
   m_SpeedType: 0
-  m_Topspeed: 150
+  m_Topspeed: 51
   m_RevRangeBoundary: 1
   m_SlipLimit: 0.3
-  m_BrakeTorque: 20000
+  m_BrakeTorque: 12500
 --- !u!114 &2082074836
 MonoBehaviour:
   m_ObjectHideFlags: 0
