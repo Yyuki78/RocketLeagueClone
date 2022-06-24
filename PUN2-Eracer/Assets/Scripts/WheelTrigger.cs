@@ -19,6 +19,8 @@ public class WheelTrigger : MonoBehaviour
 
     Rigidbody _rigidbody;
 
+    [SerializeField] float DriftVal;
+
     private void Start()
     {
         _state = GetComponentInParent<CarState>();
@@ -30,7 +32,10 @@ public class WheelTrigger : MonoBehaviour
     private void FixedUpdate()
     {
         Hitting = IsRayContact() || HittingCol;
-        
+
+        //if (_state.IsDrive && GameManager.InputManager.isDrift)
+            //ApplyLateralForce();
+
         if (Hitting)
             ApplyStickyForces(StickyForceConstant * 5, _rayContactPoint, -_rayContactNormal);
         /*
@@ -38,6 +43,15 @@ public class WheelTrigger : MonoBehaviour
             StartCoroutine(ApplyStickyForces3(StickyForceConstant * 5));
         */
         //ApplyStickyForces2(StickyForceConstant * 5);
+    }
+
+    private void ApplyLateralForce()
+    {
+        float Fy = Vector3.Dot(_rigidbody.GetPointVelocity(transform.position - transform.up * transform.localScale.z / 2), transform.right) * DriftVal;
+        Vector3 _lateralForcePosition = transform.localPosition;
+        _lateralForcePosition.y = 0;
+        _lateralForcePosition = _state.transform.TransformPoint(_lateralForcePosition);
+        _rigidbody.AddForceAtPosition(-Fy * transform.right, _lateralForcePosition, ForceMode.Acceleration);
     }
 
     //タイヤを地面から離れなくする
