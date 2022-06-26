@@ -245,12 +245,12 @@ public class CarMove3 : MonoBehaviour
         }
     }
 
-    float driftSteer;
+    //float driftSteer;
     private void Steering(float steering)
     {
         WheelFrictionCurve sFriction = m_WheelColliders[2].sidewaysFriction;
-        driftSteer += steering;
-        driftSteer= Mathf.Clamp(driftSteer, -10, 10);
+        //driftSteer += steering;
+        //driftSteer= Mathf.Clamp(driftSteer, -10, 10);
         m_SteerAngle = steering * m_MaximumSteerAngle;
         if (steering > 0.5f)
         {
@@ -262,11 +262,11 @@ public class CarMove3 : MonoBehaviour
         }
         if (GameManager.InputManager.isDrift)
         {
-            //m_WheelColliders[0].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer * 5 / 10;
-            //m_WheelColliders[1].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer * 5 / 10;
+            m_WheelColliders[0].steerAngle = m_SteerAngle;
+            m_WheelColliders[1].steerAngle = m_SteerAngle;
 
-            m_WheelColliders[0].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
-            m_WheelColliders[1].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
+            //m_WheelColliders[0].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
+            //m_WheelColliders[1].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
             if (steering > 0.5f)
             {
                 m_SteerAngle += ((m_Rigidbody.velocity.magnitude) /2);
@@ -275,8 +275,8 @@ public class CarMove3 : MonoBehaviour
             {
                 m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) /2);
             }
-            //m_WheelColliders[2].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer * 4 / 10;
-            //m_WheelColliders[3].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer * 4 / 10;
+            m_WheelColliders[2].steerAngle = -m_SteerAngle / 2;
+            m_WheelColliders[3].steerAngle = -m_SteerAngle / 2;
 
             //m_WheelColliders[2].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
             //m_WheelColliders[3].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
@@ -286,17 +286,16 @@ public class CarMove3 : MonoBehaviour
         }
         else
         {
-            m_WheelColliders[2].steerAngle = 0;
-            m_WheelColliders[3].steerAngle = 0;
             m_WheelColliders[0].steerAngle = m_SteerAngle;
             m_WheelColliders[1].steerAngle = m_SteerAngle;
+            m_WheelColliders[2].steerAngle = 0;
+            m_WheelColliders[3].steerAngle = 0;
 
             sFriction.extremumSlip = 1f;
             sFriction.extremumValue = 30f;
         }
         m_WheelColliders[2].sidewaysFriction = sFriction;
         m_WheelColliders[3].sidewaysFriction = sFriction;
-        Debug.Log("入力値" + steering);
         Debug.Log(m_SteerAngle);
     }
 

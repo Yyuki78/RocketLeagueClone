@@ -14,7 +14,7 @@ public class WheelTrigger : MonoBehaviour
 
     private bool HittingCol = false;
 
-    private float _rayLen, _rayOffset = 0.05f;
+    [SerializeField] private float _rayLen, _rayOffset = 0.05f;
     private Vector3 _rayContactPoint, _rayContactNormal;
 
     Rigidbody _rigidbody;
@@ -27,6 +27,7 @@ public class WheelTrigger : MonoBehaviour
         _move = GetComponentInParent<CarMove2>();
         _rigidbody = GetComponentInParent<Rigidbody>();
         _rayLen = transform.localScale.x / 2 + _rayOffset;
+        _rayLen = 0.3f;
     }
 
     private void FixedUpdate()
@@ -86,6 +87,7 @@ public class WheelTrigger : MonoBehaviour
 
     private bool IsRayContact()
     {
+        Debug.DrawRay(gameObject.transform.position, -transform.up, Color.red, _rayLen);
         var isHit = Physics.Raycast(transform.position, -transform.up, out var hit, _rayLen);
         _rayContactPoint = hit.point;
         _rayContactNormal = hit.normal;
