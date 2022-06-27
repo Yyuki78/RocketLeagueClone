@@ -5077,6 +5077,7 @@ MonoBehaviour:
   _jumpTimeOver: 0
   TorqueVal: 1
   once: 0
+  isFliping: 0
 --- !u!1 &123776626
 GameObject:
   m_ObjectHideFlags: 0
@@ -27195,8 +27196,9 @@ MonoBehaviour:
   _firstJump: 0
   _secondJump: 0
   _jumpTimeOver: 0
-  TorqueVal: 50
+  TorqueVal: 40
   once: 0
+  isFliping: 0
 --- !u!114 &2082074834
 MonoBehaviour:
   m_ObjectHideFlags: 0

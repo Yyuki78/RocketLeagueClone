@@ -29,6 +29,8 @@ public class CarJumpMove : MonoBehaviour
     [SerializeField] float TorqueVal = 1f;
     private float AirTime = 0f;
     [SerializeField] private bool once = false;
+    [SerializeField] private bool isFliping = false;
+    private float FlipTime = 0f;
 
     private IEnumerator reset;
 
@@ -54,6 +56,8 @@ public class CarJumpMove : MonoBehaviour
 
     private void FixedUpdate()
     {
+        FlipAnimetion();
+
         JumpBackToTheFeet();
     }
 
@@ -196,8 +200,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 4 + Vector3.forward + Vector3.right;
                     _jumpAngle = -Vector3.forward + Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
@@ -205,8 +209,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 4 - Vector3.forward - Vector3.right;
                     _jumpAngle = Vector3.forward + Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
                 else
                 {
@@ -214,8 +218,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 4 + Vector3.forward;
                     _jumpAngle = Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
             }
             else if (throttle < -0.1f)
@@ -223,10 +227,16 @@ public class CarJumpMove : MonoBehaviour
                 if (steer > 0.1f)
                 {
                     _switchJump = 7;
+                    _forceAngle = Vector3.up / 4 - Vector3.forward + Vector3.right;
+                    _jumpAngle = -Vector3.forward - Vector3.right;
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
                     _switchJump = 8;
+                    _forceAngle = Vector3.up / 4 - Vector3.forward - Vector3.right;
+                    _jumpAngle = Vector3.forward - Vector3.right;
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
                 }
                 else
                 {
@@ -234,8 +244,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 2 - Vector3.forward;
                     _jumpAngle = -Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
             }
             else
@@ -246,8 +256,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 4 + Vector3.right;
                     _jumpAngle = -Vector3.forward * 200f;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.Impulse);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.Impulse);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
@@ -255,8 +265,8 @@ public class CarJumpMove : MonoBehaviour
                     _forceAngle = Vector3.up / 4 - Vector3.right;
                     _jumpAngle = Vector3.forward * 2000000f;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    _rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
                 }
                 else
                 {
@@ -269,6 +279,8 @@ public class CarJumpMove : MonoBehaviour
             _canSecondJump = false;
             once = false;
             //SecondJump();
+
+            isFliping = true;
         }
 
         /*
@@ -287,6 +299,26 @@ public class CarJumpMove : MonoBehaviour
         _jumpTimeOver = true;
         isJumping = true;
         _canSecondJump = false;*/
+    }
+
+    //二回目のジャンプ時にフリップした場合の力学
+    private void FlipAnimetion()
+    {
+        if (isFliping)
+        {
+            FlipTime += Time.deltaTime;
+
+            _rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.Acceleration);
+        }
+        else
+        {
+            FlipTime = 0f;
+        }
+
+        if (FlipTime > 0.8f)
+        {
+            isFliping = false;
+        }
     }
 
     //BodyDeadStateの時にジャンプボタンでひっくり返る
