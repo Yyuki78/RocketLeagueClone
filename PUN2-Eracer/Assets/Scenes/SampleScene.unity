@@ -5071,8 +5071,12 @@ MonoBehaviour:
   jumpForceMultiplier: 1
   upForce: 3
   upTorque: 50
-  _isCanFirstJump: 0
-  _isCanKeepJumping: 0
+  isJumping: 0
+  _firstJump: 0
+  _secondJump: 0
+  _jumpTimeOver: 0
+  TorqueVal: 1
+  once: 0
 --- !u!1 &123776626
 GameObject:
   m_ObjectHideFlags: 0
@@ -12839,8 +12843,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688848342}
-  m_LocalRotation: {x: 0.22975291, y: 1e-45, z: -0, w: 0.973249}
-  m_LocalPosition: {x: 0.644722, y: -8.650688, z: 31.637997}
+  m_LocalRotation: {x: 0.2297508, y: -0.0041866796, z: 0.0009883408, w: 0.97324}
+  m_LocalPosition: {x: 0.6705322, y: -8.650688, z: 31.638107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 481714036}
@@ -14603,8 +14607,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.22975291, y: 1e-45, z: -0, w: 0.973249}
-  m_LocalPosition: {x: 0.644722, y: -8.650688, z: 31.637997}
+  m_LocalRotation: {x: 0.2297508, y: -0.0041866796, z: 0.0009883408, w: 0.97324}
+  m_LocalPosition: {x: 0.6705322, y: -8.650688, z: 31.638107}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 681228949}
@@ -27187,8 +27191,12 @@ MonoBehaviour:
   jumpForceMultiplier: 1
   upForce: 1
   upTorque: 50
-  _isCanFirstJump: 0
-  _isCanKeepJumping: 0
+  isJumping: 0
+  _firstJump: 0
+  _secondJump: 0
+  _jumpTimeOver: 0
+  TorqueVal: 50
+  once: 0
 --- !u!114 &2082074834
 MonoBehaviour:
   m_ObjectHideFlags: 0
