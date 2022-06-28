@@ -245,10 +245,11 @@ public class CarMove3 : MonoBehaviour
         }
     }
 
-    //float driftSteer;
+    float driftSteerTime;
     private void Steering(float steering)
     {
         WheelFrictionCurve sFriction = m_WheelColliders[2].sidewaysFriction;
+        JointSpring Spring = m_WheelColliders[2].suspensionSpring;
         //driftSteer += steering;
         //driftSteer= Mathf.Clamp(driftSteer, -10, 10);
         m_SteerAngle = steering * m_MaximumSteerAngle;
@@ -281,8 +282,22 @@ public class CarMove3 : MonoBehaviour
             //m_WheelColliders[2].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
             //m_WheelColliders[3].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
 
-            sFriction.extremumSlip = 3f;
-            sFriction.extremumValue = 8f;
+            if (Mathf.Abs(steering) >= 0.1f)
+            {
+                if (driftSteerTime < 3f)
+                {
+                    driftSteerTime += Time.deltaTime;
+                }
+            }
+            else
+            {
+                driftSteerTime = 0f;
+            }
+
+            sFriction.extremumSlip = 1f + (driftSteerTime / 3 * 2);//最大3
+            sFriction.extremumValue = 30f - (driftSteerTime / 3 * 22);//最小8
+
+            Spring.spring = 10000 - (driftSteerTime / 3 * 9900);//最小100
         }
         else
         {
@@ -293,9 +308,13 @@ public class CarMove3 : MonoBehaviour
 
             sFriction.extremumSlip = 1f;
             sFriction.extremumValue = 30f;
+
+            Spring.spring = 10000;
         }
         m_WheelColliders[2].sidewaysFriction = sFriction;
         m_WheelColliders[3].sidewaysFriction = sFriction;
+        m_WheelColliders[2].suspensionSpring = Spring;
+        m_WheelColliders[3].suspensionSpring = Spring;
         Debug.Log(m_SteerAngle);
     }
 

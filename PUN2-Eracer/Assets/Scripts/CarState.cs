@@ -18,6 +18,7 @@ public class CarState : MonoBehaviour
     public CarStates _states;
     public bool IsDrive;
     public bool SomeWheelHit = false;
+    public bool canSecondJump = false;
 
     //BodyTriggerとWheelTriggerで判別する
     public bool BodyHitting = false;
@@ -124,6 +125,15 @@ public class CarState : MonoBehaviour
             SomeWheelHit = false;
         }
 
+        if (_states == CarStates.Air || _states == CarStates.SomeWheelsGround)
+        {
+            canSecondJump = true;
+        }
+        else
+        {
+            canSecondJump = false;
+        }
+
         WheelHittingNum = 0;
     }
 
@@ -134,6 +144,6 @@ public class CarState : MonoBehaviour
         //ドライブ可能でないor逆さまなら無効
         if (!IsDrive) return;
         if (Vector3.Dot(-Vector3.up, transform.up) > 0.98f) return;
-        _rigidbody.AddForce(-transform.up * 100*5);
+        _rigidbody.AddForce(-transform.up * 100 * 5);
     }
 }

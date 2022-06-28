@@ -4,44 +4,33 @@ using UnityEngine;
 
 public class CarJumpMove : MonoBehaviour
 {
-    [Header("Forces")]
-    [Range(0.25f, 4)]
-    // default 1
-    public float jumpForceMultiplier = 1f;
-    public int upForce = 3;
-    public int upTorque = 50;
-
-    float _jumpTimer = 0;
-    bool _isCanFirstJump = false;
-    bool _isJumping = false;
-    bool _isCanKeepJumping = false;
-
+    //威力調整用
+    [SerializeField] float jumpForceVal = 1f;
+    [SerializeField] float TorqueVal = 1f;
+    //入力量
     private float throttle, steer;
 
-    [SerializeField] private bool isJumping = false;
-    [SerializeField] private bool _firstJump = false;
-    [SerializeField] private bool _secondJump = false;
-    [SerializeField] private bool _jumpTimeOver = false;
-    private bool _canSecondJump = false;
-    private int _switchJump = 0;
-    private Vector3 _forceAngle;
-    private Vector3 _jumpAngle;
-    [SerializeField] float TorqueVal = 1f;
-    private float AirTime = 0f;
-    [SerializeField] private bool once = false;
-    [SerializeField] private bool isFliping = false;
-    private float FlipTime = 0f;
+    [SerializeField] private bool isJumping = false;//ジャンプ中か
+    [SerializeField] private bool isFliping = false;//フリップ中か
+    [SerializeField] private bool _firstJump = false;//一回目のジャンプ
+    [SerializeField] private bool _secondJump = false;//二回目のジャンプ=フリップ
+    [SerializeField] private bool _jumpTimeOver = false;//空中にいすぎで二回目のジャンプが出来なくなる
+    [SerializeField] private bool _canFirstJump = false;//一回目のジャンプが可能か
+    [SerializeField] private bool _canSecondJump = false;//二回目のジャンプが可能か
+    private int _switchJump = 0;//二回目のジャンプの種類
+    private Vector3 _forceAngle;//二回目のジャンプの力
+    private Vector3 _jumpAngle;//二回目のジャンプの回転
+    private float AirTime = 0f;//空中にいる時間
+    private float FlipTime = 0f;//フリップしている時間
+    private bool once = false;//一回しか呼ばない用
 
-    private IEnumerator reset;
-
-    Rigidbody _rigidbody;
-    CarState _state;
+    private Rigidbody _rigidbody;
+    private CarState _state;
 
     void Start()
     {
         _rigidbody = GetComponentInParent<Rigidbody>();
         _state = GetComponent<CarState>();
-        reset = TimeOver();
     }
 
     //今回使用する力は全て瞬間なのでUpdateでも問題はない
@@ -52,13 +41,14 @@ public class CarJumpMove : MonoBehaviour
         Jump();
 
         SecondJump();
+
+        JumpBackToTheFeet();
     }
 
+    //フリップの回転だけは加速なのでFixedUpdateで行う
     private void FixedUpdate()
     {
         FlipAnimetion();
-
-        JumpBackToTheFeet();
     }
 
     private void JumpVariables()
@@ -71,6 +61,7 @@ public class CarJumpMove : MonoBehaviour
             _jumpTimeOver = false;
             AirTime = 0;
             once = true;
+            _canSecondJump = false;
         }
         else
         {
@@ -78,7 +69,7 @@ public class CarJumpMove : MonoBehaviour
             AirTime += Time.deltaTime;
         }
 
-        if (!_firstJump && !_jumpTimeOver)
+        if (!_firstJump && !_jumpTimeOver && _state.canSecondJump)
         {
             _secondJump = true;
         }
@@ -96,60 +87,30 @@ public class CarJumpMove : MonoBehaviour
             _jumpTimeOver = false;
         }
 
+        if (AirTime > 0.5f)
+        {
+            _canFirstJump = false;
+        }
+
         throttle = GameManager.InputManager.throttleInput;
         steer = GameManager.InputManager.steerInput;
     }
 
     private void Jump()
     {
-        /*
-        // Do initial jump impulse only once
-        // TODO: Currently bugged, should be .isJumpDown for the initial jump impulse.
-        // Right now does the whole jump impulse
-        if (GameManager.InputManager.isJump && _isCanFirstJump)
+        //1stジャンプ可能
+        if (!GameManager.InputManager.isJump && !_canSecondJump && !_canFirstJump)
         {
-            _rigidbody.AddForce(transform.up * 292 / 100 * jumpForceMultiplier, ForceMode.VelocityChange);
-            _isCanKeepJumping = true;
-            _isCanFirstJump = false;
-            _isJumping = true;
-
-            _jumpTimer += Time.fixedDeltaTime;
+            _canFirstJump = true;
         }
-
-        // Keep jumping if the jump button is being pressed
-        if (GameManager.InputManager.isJump && _isJumping && _isCanKeepJumping && _jumpTimer <= 0.2f)
-        {
-            _rigidbody.AddForce(transform.up * 1458f / 100 * jumpForceMultiplier, ForceMode.Acceleration);
-            _jumpTimer += Time.fixedDeltaTime;
-        }
-
-        // If jump button was released we can't start jumping again mid air
-        if (GameManager.InputManager.isJumpUp)
-            _isCanKeepJumping = false;
-
-        // Reset jump flags when landed
-        if (_state.IsDrive)
-        {
-            // Need a timer, otherwise while jumping we are setting isJumping flag to false right on the next frame 
-            if (_jumpTimer >= 0.1f)
-                _isJumping = false;
-
-            _jumpTimer = 0;
-            _isCanFirstJump = true;
-        }
-        // Cant start jumping while in the air
-        else if (!_state.IsDrive)
-            _isCanFirstJump = false;
-
-        */
 
         //ジャンプボタンが押されるとジャンプする 1回目
         //本来は1度しか呼ばれないはずなのだが、FixedUpdateとUpdateの都合上
-        //ボタンを押し込む量によって呼ばれる回数が変わるのでくしくも元のゲームの再現になった
-        if (GameManager.InputManager.isJump && _firstJump && !isJumping)
+        //ボタンを押し込む量によって呼ばれる回数が変わるので、くしくも元のゲームの再現になった
+        if (GameManager.InputManager.isJump && _firstJump && !isJumping && _canFirstJump)
         {
             //VelocityChangeはImpulseの質量無視版
-            _rigidbody.AddForceAtPosition(transform.up * 0.8f * jumpForceMultiplier, transform.position, ForceMode.VelocityChange);
+            _rigidbody.AddForceAtPosition(transform.up * 0.8f * jumpForceVal, transform.position, ForceMode.VelocityChange);
             _firstJump = false;
             isJumping = true;
 
@@ -157,29 +118,7 @@ public class CarJumpMove : MonoBehaviour
         }
     }
 
-    //コルーチンをそのまま停止すると再開時に続きから始まるのでリセットする
-    private IEnumerator WaitReset()
-    {
-        //即実行すると次のフレームでリセットされるので少し待つ
-        yield return new WaitForSeconds(0.1f);
-        if (isJumping) yield break;
-        if (!_state.IsDrive) yield break;
-        StopCoroutine(reset);
-        reset = null;
-        reset = TimeOver();
-        yield break;
-    }
-
-    //1stジャンプから時間が立つと2回目が出来なくなる
-    private IEnumerator TimeOver()
-    {
-        yield return new WaitForSeconds(2);
-        if (_state.IsDrive) yield break;
-        _jumpTimeOver = true;
-        yield break;
-    }
-
-    //UpdateのSwitchで実行内容が変わる
+    //押されたキーで実行内容が変わる
     private void SecondJump()
     {
         //セカンドジャンプ可能
@@ -199,27 +138,21 @@ public class CarJumpMove : MonoBehaviour
                     _switchJump = 5;
                     _forceAngle = Vector3.up / 4 + Vector3.forward + Vector3.right;
                     _jumpAngle = -Vector3.forward + Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
                     _switchJump = 6;
                     _forceAngle = Vector3.up / 4 - Vector3.forward - Vector3.right;
                     _jumpAngle = Vector3.forward + Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else
                 {
                     _switchJump = 1;
                     _forceAngle = Vector3.up / 4 + Vector3.forward;
                     _jumpAngle = Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
             }
             else if (throttle < -0.1f)
@@ -229,23 +162,21 @@ public class CarJumpMove : MonoBehaviour
                     _switchJump = 7;
                     _forceAngle = Vector3.up / 4 - Vector3.forward + Vector3.right;
                     _jumpAngle = -Vector3.forward - Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
                     _switchJump = 8;
                     _forceAngle = Vector3.up / 4 - Vector3.forward - Vector3.right;
                     _jumpAngle = Vector3.forward - Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else
                 {
                     _switchJump = 2;
                     _forceAngle = Vector3.up / 2 - Vector3.forward;
                     _jumpAngle = -Vector3.right;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
             }
             else
@@ -254,51 +185,30 @@ public class CarJumpMove : MonoBehaviour
                 {
                     _switchJump = 3;
                     _forceAngle = Vector3.up / 4 + Vector3.right;
-                    _jumpAngle = -Vector3.forward * 200f;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.Impulse);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _jumpAngle = -Vector3.forward;
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
                     _switchJump = 4;
                     _forceAngle = Vector3.up / 4 - Vector3.right;
-                    _jumpAngle = Vector3.forward * 2000000f;
-                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceMultiplier, ForceMode.VelocityChange);
-                    //_rigidbody.AddRelativeTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
-                    //_rigidbody.AddTorque(_jumpAngle * TorqueVal, ForceMode.VelocityChange);
+                    _jumpAngle = Vector3.forward;
+                    _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else
                 {
                     _switchJump = 0;
-                    _rigidbody.AddForceAtPosition(transform.up * 3f * jumpForceMultiplier, transform.position, ForceMode.VelocityChange);
+                    _jumpAngle = Vector3.zero;
+                    _rigidbody.AddForceAtPosition(transform.up * 3f * jumpForceVal, transform.position, ForceMode.VelocityChange);
                 }
             }
             _secondJump = false;
             isJumping = true;
             _canSecondJump = false;
             once = false;
-            //SecondJump();
 
             isFliping = true;
         }
-
-        /*
-        //0は上,1は前2は後ろ,3は右,4は左,5は右前,6は左前,7は右後ろ,8は左後ろ
-        switch (_switchJump)
-        {
-            case 0:
-                _rigidbody.AddForceAtPosition(transform.up * 3f * jumpForceMultiplier, transform.position, ForceMode.VelocityChange);
-                break;
-            case 1:
-                break;
-            default:
-                break;
-        }
-        _secondJump = false;
-        _jumpTimeOver = true;
-        isJumping = true;
-        _canSecondJump = false;*/
     }
 
     //二回目のジャンプ時にフリップした場合の力学
@@ -315,21 +225,22 @@ public class CarJumpMove : MonoBehaviour
             FlipTime = 0f;
         }
 
-        if (FlipTime > 0.8f)
+        if (FlipTime > 0.5f)
         {
             isFliping = false;
         }
     }
 
-    //BodyDeadStateの時にジャンプボタンでひっくり返る
+    //BodyGroundDeadStateの時にジャンプボタンでひっくり返る
     private void JumpBackToTheFeet()
     {
         if (_state._states != CarState.CarStates.BodyGroundDead) return;
 
-        if (GameManager.InputManager.isJumpDown || Input.GetButtonDown("A"))
+        if (GameManager.InputManager.isJumpDown)
         {
-            _rigidbody.AddForce(Vector3.up * upForce, ForceMode.VelocityChange);
-            _rigidbody.AddTorque(transform.forward * upTorque, ForceMode.VelocityChange);
+            _rigidbody.AddForce(Vector3.up * 2f, ForceMode.VelocityChange);
+            _jumpAngle = Vector3.forward;
+            isFliping = true;
         }
     }
 }
