@@ -20,7 +20,7 @@ public class CarMove3 : MonoBehaviour
     [SerializeField] private float m_MaxHandbrakeTorque;
     [SerializeField] private float m_Downforce = 100f;
     [SerializeField] private SpeedType m_SpeedType;
-    public float m_Topspeed = 200;
+    //public float m_Topspeed = 200;
     [SerializeField] private static int NoOfGears = 5;
     [SerializeField] private float m_RevRangeBoundary = 1f;
     [SerializeField] private float m_SlipLimit;
@@ -36,12 +36,15 @@ public class CarMove3 : MonoBehaviour
     private Rigidbody m_Rigidbody;
     private const float k_ReversingThreshold = 0.01f;
 
+    public float m_Topspeed2 = 23;
+    private bool holdSpeed = false;
+
     public bool Skidding { get; private set; }
     public float BrakeInput { get; private set; }
     public float CurrentSteerAngle { get { return m_SteerAngle; } }
     public float CurrentSpeed { get { return m_Rigidbody.velocity.magnitude * 2.23693629f; } }
-    public float MaxSpeed { get { return m_Topspeed; } }
-    public float Revs { get; private set; }
+    //public float MaxSpeed { get { return m_Topspeed; } }
+    //public float Revs { get; private set; }
     public float AccelInput { get; private set; }
 
     CarState _state;
@@ -75,7 +78,7 @@ public class CarMove3 : MonoBehaviour
         }
     }
 
-
+    /*
     private void GearChanging()
     {
         float f = Mathf.Abs(CurrentSpeed / MaxSpeed);
@@ -107,7 +110,7 @@ public class CarMove3 : MonoBehaviour
         return (1.0f - value) * from + value * to;
     }
 
-
+    /*
     private void CalculateGearFactor()
     {
         float f = (1 / (float)NoOfGears);
@@ -115,9 +118,9 @@ public class CarMove3 : MonoBehaviour
         // We smooth towards the 'target' gear factor, so that revs don't instantly snap up or down when changing gear.
         var targetGearFactor = Mathf.InverseLerp(f * m_GearNum, f * (m_GearNum + 1), Mathf.Abs(CurrentSpeed / MaxSpeed));
         m_GearFactor = Mathf.Lerp(m_GearFactor, targetGearFactor, Time.deltaTime * 5f);
-    }
+    }*/
 
-
+    /*
     private void CalculateRevs()
     {
         // calculate engine revs (for display / sound)
@@ -127,11 +130,12 @@ public class CarMove3 : MonoBehaviour
         var revsRangeMin = ULerp(0f, m_RevRangeBoundary, CurveFactor(gearNumFactor));
         var revsRangeMax = ULerp(m_RevRangeBoundary, 1f, gearNumFactor);
         Revs = ULerp(revsRangeMin, revsRangeMax, m_GearFactor);
-    }
+    }*/
 
 
     public void Move(float steering, float accel, float footbrake, float handbrake)
     {
+        //タイヤのメッシュを動きに追従させる
         for (int i = 0; i < 4; i++)
         {
             Quaternion quat;
@@ -142,32 +146,38 @@ public class CarMove3 : MonoBehaviour
             m_WheelMeshes[i].transform.rotation = m_WheelMeshes[i].transform.rotation *new Quaternion(90, 90, 0, 0);
         }
 
-        //clamp input values
+        //入力量を-1,1の範囲に収める
         steering = Mathf.Clamp(steering, -1, 1);
         AccelInput = accel = Mathf.Clamp(accel, 0, 1);
         BrakeInput = footbrake = -1 * Mathf.Clamp(footbrake, -1, 0);
         handbrake = Mathf.Clamp(handbrake, 0, 1);
 
+        //曲げる
         Steering(steering);
 
-        SteerHelper();
+        //SteerHelper();
+        //進ませる
         ApplyDrive(accel, footbrake);
+        //ブレーキ
         ApplyBrake(BrakeInput);
 
+        //地上のブースト　AirBoostingはCarAirMove
         GroundBoosting();
-        //AirBoostingはCarAirMove
 
-        CapSpeed();
+        //CapSpeed();
+
+        //最大速度に到達するとその速度で走るようになる
+        HoldTopSpeed();
 
 
-        CalculateRevs();
-        GearChanging();
+        //CalculateRevs();
+        //GearChanging();
 
-        AddDownForce();
-        TractionControl();
+        //AddDownForce();
+        //TractionControl();
     }
 
-
+    /*
     private void CapSpeed()
     {
         float speed = m_Rigidbody.velocity.magnitude;
@@ -186,7 +196,7 @@ public class CarMove3 : MonoBehaviour
                     m_Rigidbody.velocity = (m_Topspeed / 3.6f) * m_Rigidbody.velocity.normalized;
                 break;
         }
-    }
+    }*/
 
 
     private void ApplyDrive(float accel, float footbrake)
@@ -232,15 +242,39 @@ public class CarMove3 : MonoBehaviour
 
     private void GroundBoosting()
     {
-        if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed)
+        if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed2)
         {
             if (_state.IsDrive)
             {
+                if (holdSpeed) return;
                 //m_Rigidbody.AddForce(20 * transform.forward, ForceMode.Acceleration);
                 for (int i = 0; i < 4; i++)
                 {
-                    m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 2;
+                    m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 1.75f;
                 }
+            }
+        }
+    }
+
+    private void HoldTopSpeed()
+    {
+        if (m_Rigidbody.velocity.magnitude >= m_Topspeed2 - 0.5f)
+        {
+            if (!_state.IsDrive) return;
+            holdSpeed = true;
+            Debug.Log("最高速度");
+        }
+        else
+        {
+            holdSpeed = false;
+        }
+
+        if (holdSpeed)
+        {
+            if (m_Rigidbody.velocity.magnitude >= m_Topspeed2) return;
+            for (int i = 0; i < 4; i++)
+            {
+                m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 1.75f;
             }
         }
     }
@@ -252,15 +286,31 @@ public class CarMove3 : MonoBehaviour
         JointSpring Spring = m_WheelColliders[2].suspensionSpring;
         //driftSteer += steering;
         //driftSteer= Mathf.Clamp(driftSteer, -10, 10);
-        m_SteerAngle = steering * m_MaximumSteerAngle;
-        if (steering > 0.5f)
+        //入力量に応じて左右に曲がる
+        m_SteerAngle = m_MaximumSteerAngle;
+        /*
+        if (steering >= 0.1f)
         {
-            m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 3);
+            //m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 3);
+            m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 3f);
+            if (m_SteerAngle < 0)
+            {
+                m_SteerAngle = 0;
+            }
         }
-        else if (steering < -0.5f)
+        else if (steering <= -0.1f)
         {
-            m_SteerAngle += ((m_Rigidbody.velocity.magnitude) / 3);
-        }
+            //m_SteerAngle += ((m_Rigidbody.velocity.magnitude) / 3);
+            m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 3f);
+            if (m_SteerAngle > 0)
+            {
+                m_SteerAngle = 0;
+            }
+        }*/
+        m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) / 3f);
+        m_SteerAngle *= steering;
+
+        //ドリフト中
         if (GameManager.InputManager.isDrift)
         {
             m_WheelColliders[0].steerAngle = m_SteerAngle;
@@ -268,16 +318,17 @@ public class CarMove3 : MonoBehaviour
 
             //m_WheelColliders[0].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
             //m_WheelColliders[1].steerAngle = Mathf.Abs(m_SteerAngle) * driftSteer / 10;
-            if (steering > 0.5f)
+            /*
+            if (steering > 0.1f)
             {
-                m_SteerAngle += ((m_Rigidbody.velocity.magnitude) /2);
+                m_SteerAngle += ((m_Rigidbody.velocity.magnitude) /4);
             }
-            else if (steering < -0.5f)
+            else if (steering < -0.1f)
             {
-                m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) /2);
-            }
-            m_WheelColliders[2].steerAngle = -m_SteerAngle / 2;
-            m_WheelColliders[3].steerAngle = -m_SteerAngle / 2;
+                m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) /4);
+            }*/
+            m_WheelColliders[2].steerAngle = -m_SteerAngle / 10;
+            m_WheelColliders[3].steerAngle = -m_SteerAngle / 10;
 
             //m_WheelColliders[2].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
             //m_WheelColliders[3].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
@@ -294,10 +345,10 @@ public class CarMove3 : MonoBehaviour
                 driftSteerTime = 0f;
             }
 
-            sFriction.extremumSlip = 1f + (driftSteerTime / 3 * 2);//最大3
-            sFriction.extremumValue = 30f - (driftSteerTime / 3 * 22);//最小8
+            sFriction.extremumSlip = 1f + (driftSteerTime / 3 * 1);//最大2
+            sFriction.extremumValue = 30f - (driftSteerTime / 3 * 20);//最小10
 
-            Spring.spring = 10000 - (driftSteerTime / 3 * 9900);//最小100
+            Spring.spring = 11500 - (driftSteerTime / 3 * 9000);//最小2500
         }
         else
         {
@@ -309,16 +360,15 @@ public class CarMove3 : MonoBehaviour
             sFriction.extremumSlip = 1f;
             sFriction.extremumValue = 30f;
 
-            Spring.spring = 10000;
+            Spring.spring = 11500;
         }
         m_WheelColliders[2].sidewaysFriction = sFriction;
         m_WheelColliders[3].sidewaysFriction = sFriction;
         m_WheelColliders[2].suspensionSpring = Spring;
         m_WheelColliders[3].suspensionSpring = Spring;
-        Debug.Log(m_SteerAngle);
     }
 
-
+    /*
     private void SteerHelper()
     {
         for (int i = 0; i < 4; i++)
@@ -337,23 +387,23 @@ public class CarMove3 : MonoBehaviour
             m_Rigidbody.velocity = velRotation * m_Rigidbody.velocity;
         }
         m_OldRotation = transform.eulerAngles.y;
-    }
+    }*/
 
-
+    /*
     // this is used to add more grip in relation to speed
     private void AddDownForce()
     {
         /*
         m_WheelColliders[0].attachedRigidbody.AddForce(-transform.up * m_Downforce * 5 *
                                                      m_WheelColliders[0].attachedRigidbody.velocity.magnitude);
-        */
+        *//*
         m_Rigidbody.AddForce(-transform.up * m_Downforce);
         if (_state.SomeWheelHit && !_state.IsDrive)
         {
             m_Rigidbody.AddForce(-transform.up * m_Downforce * 5);
         }
     }
-
+    /*
     // crude traction control that reduces the power to wheel if the car is wheel spinning too much
     private void TractionControl()
     {
@@ -367,7 +417,7 @@ public class CarMove3 : MonoBehaviour
         }
     }
 
-
+    
     private void AdjustTorque(float forwardSlip)
     {
         if (forwardSlip >= m_SlipLimit && m_CurrentTorque >= 0)
@@ -382,5 +432,5 @@ public class CarMove3 : MonoBehaviour
                 m_CurrentTorque = m_FullTorqueOverAllWheels;
             }
         }
-    }
+    }*/
 }

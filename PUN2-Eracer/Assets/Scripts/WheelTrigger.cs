@@ -35,9 +35,9 @@ public class WheelTrigger : MonoBehaviour
         Hitting = IsRayContact() || HittingCol;
 
         //if (_state.IsDrive && GameManager.InputManager.isDrift)
-            //ApplyLateralForce();
+        //ApplyLateralForce();
 
-        if (Hitting)
+        if (Hitting && _state.IsDrive)
             ApplyStickyForces(StickyForceConstant * 5, _rayContactPoint, -_rayContactNormal);
         /*
         if (!Hitting && _state.SomeWheelHit && Vector3.Dot(Vector3.up, transform.up) > 8f)

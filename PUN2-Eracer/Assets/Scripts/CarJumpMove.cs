@@ -136,21 +136,21 @@ public class CarJumpMove : MonoBehaviour
                 if (steer > 0.1f)
                 {
                     _switchJump = 5;
-                    _forceAngle = Vector3.up / 4 + Vector3.forward + Vector3.right;
+                    _forceAngle = Vector3.up / 4 + Vector3.forward / 2 + Vector3.right;
                     _jumpAngle = -Vector3.forward + Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else if (steer < -0.1f)
                 {
                     _switchJump = 6;
-                    _forceAngle = Vector3.up / 4 - Vector3.forward - Vector3.right;
+                    _forceAngle = Vector3.up / 4 - Vector3.forward / 2 - Vector3.right;
                     _jumpAngle = Vector3.forward + Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
                 else
                 {
                     _switchJump = 1;
-                    _forceAngle = Vector3.up / 4 + Vector3.forward;
+                    _forceAngle = Vector3.up / 4 + Vector3.forward * 1.5f;
                     _jumpAngle = Vector3.right;
                     _rigidbody.AddRelativeForce(_forceAngle * 3f * jumpForceVal, ForceMode.VelocityChange);
                 }
