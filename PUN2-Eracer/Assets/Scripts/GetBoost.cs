@@ -13,6 +13,8 @@ public class GetBoost : MonoBehaviour
     [SerializeField] Material _white;
     [SerializeField] Material _yellow;
 
+    [SerializeField] MeshRenderer _materialChild;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,8 +27,8 @@ public class GetBoost : MonoBehaviour
         if (!enable) return;
         if (other.gameObject.layer == 8)
         {
-            enable = false;
             var move = other.gameObject.GetComponentInParent<CarMove3>();
+            if (move.BoostQuantity >= 100) return;
 
             if (BoostObjType == 1)
             {
@@ -36,6 +38,28 @@ public class GetBoost : MonoBehaviour
             {
                 move.GetBoostMax();
             }
+            enable = false;
+            StartCoroutine(CoolDown());
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!enable) return;
+        if (other.gameObject.layer == 8)
+        {
+            var move = other.gameObject.GetComponentInParent<CarMove3>();
+            if (move.BoostQuantity >= 100) return;
+
+            if (BoostObjType == 1)
+            {
+                move.GetBoostMini();
+            }
+            else
+            {
+                move.GetBoostMax();
+            }
+            enable = false;
             StartCoroutine(CoolDown());
         }
     }
@@ -50,7 +74,9 @@ public class GetBoost : MonoBehaviour
         }
         else
         {
+            _materialChild.material = _white;
             yield return new WaitForSeconds(10f);
+            _materialChild.material = _yellow;
         }
         _material.material = _yellow;
         enable = true;
