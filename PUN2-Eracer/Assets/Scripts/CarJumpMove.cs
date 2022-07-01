@@ -78,7 +78,7 @@ public class CarJumpMove : MonoBehaviour
             _secondJump = false;
         }
 
-        if (AirTime > 3f)
+        if (AirTime > 2.25f)
         {
             _jumpTimeOver = true;
         }
@@ -110,7 +110,7 @@ public class CarJumpMove : MonoBehaviour
         if (GameManager.InputManager.isJump && _firstJump && !isJumping && _canFirstJump)
         {
             //VelocityChangeはImpulseの質量無視版
-            _rigidbody.AddForceAtPosition(transform.up * 0.8f * jumpForceVal, transform.position, ForceMode.VelocityChange);
+            _rigidbody.AddForceAtPosition(transform.up * 1.0f * jumpForceVal, transform.position, ForceMode.VelocityChange);
             _firstJump = false;
             isJumping = true;
 

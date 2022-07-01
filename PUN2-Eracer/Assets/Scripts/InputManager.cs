@@ -8,6 +8,8 @@ public class InputManager : MonoBehaviour
     public float throttleInput, steerInput, yawInput, pitchInput, rollInput;
     public bool isBoost, isDrift, isAirRoll;
     public bool isJump, isJumpUp, isJumpDown;
+    public bool isSwitchCamera = false;
+
     void Update()
     {
         throttleInput = GetThrottle();
@@ -24,6 +26,9 @@ public class InputManager : MonoBehaviour
         isBoost = Input.GetButton("RB") || Input.GetMouseButton(0);
         isDrift = Input.GetButton("LB") || Input.GetKey(KeyCode.LeftShift);
         isAirRoll = Input.GetButton("LB") || Input.GetKey(KeyCode.LeftShift);
+
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButton("X"))
+            isSwitchCamera = !isSwitchCamera;
     }
 
     private static float GetRollInput()
@@ -53,7 +58,7 @@ public class InputManager : MonoBehaviour
         //return Mathf.MoveTowards(steerInput, Input.GetAxis("Horizontal"), Time.fixedDeltaTime);
         return Input.GetAxis("Horizontal");
     }
-
+    /*
     public string axisName = "Horizontal";
     public AnimationCurve sensitivityCurve;
     private float _vel = 0;
@@ -72,5 +77,5 @@ public class InputManager : MonoBehaviour
         //var target = sensitivityCurve.Evaluate(Mathf.Abs(Input.GetAxis(axisName)));
         //currentInput = Mathf.SmoothDamp(currentInput, target, ref vel, 1f, Mathf.Infinity, Time.fixedDeltaTime);
         //return currentInput * Mathf.Sign(Input.GetAxis(axisName));
-    }
+    }*/
 }

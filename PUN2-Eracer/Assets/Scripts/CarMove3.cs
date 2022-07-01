@@ -49,6 +49,8 @@ public class CarMove3 : MonoBehaviour
 
     CarState _state;
 
+    public float BoostQuantity = 30;
+
     // Use this for initialization
     private void Start()
     {
@@ -169,6 +171,9 @@ public class CarMove3 : MonoBehaviour
         //最大速度に到達するとその速度で走るようになる
         HoldTopSpeed();
 
+        //スタックする問題の解消
+        ResolveStack();
+
 
         //CalculateRevs();
         //GearChanging();
@@ -201,7 +206,7 @@ public class CarMove3 : MonoBehaviour
 
     private void ApplyDrive(float accel, float footbrake)
     {
-        if (GameManager.InputManager.isBoost) return;
+        if (GameManager.InputManager.isBoost && BoostQuantity > 0) return;
 
         float thrustTorque;
 
@@ -242,7 +247,17 @@ public class CarMove3 : MonoBehaviour
 
     private void GroundBoosting()
     {
-        if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed2)
+        if (GameManager.InputManager.isBoost)
+        {
+            if (BoostQuantity <= 0)
+            {
+                BoostQuantity = 0;
+                return;
+            }
+            BoostQuantity -= 0.5f;
+        }
+
+        if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed2 && BoostQuantity > 0)
         {
             if (_state.IsDrive)
             {
@@ -258,7 +273,7 @@ public class CarMove3 : MonoBehaviour
 
     private void HoldTopSpeed()
     {
-        if (m_Rigidbody.velocity.magnitude >= m_Topspeed2 - 0.5f)
+        if (m_Rigidbody.velocity.magnitude + 0.5f >= m_Topspeed2)
         {
             if (!_state.IsDrive) return;
             holdSpeed = true;
@@ -274,7 +289,7 @@ public class CarMove3 : MonoBehaviour
             if (m_Rigidbody.velocity.magnitude >= m_Topspeed2) return;
             for (int i = 0; i < 4; i++)
             {
-                m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 1.75f;
+                m_WheelColliders[i].motorTorque = m_FullTorqueOverAllWheels / 2f;
             }
         }
     }
@@ -368,6 +383,15 @@ public class CarMove3 : MonoBehaviour
         m_WheelColliders[3].suspensionSpring = Spring;
     }
 
+    private void ResolveStack()
+    {
+        if (!_state.IsDrive) return;
+        if (Mathf.Abs(m_Rigidbody.velocity.magnitude) <= 1)
+        {
+            m_Rigidbody.AddForce(transform.up * 1f);
+        }
+    }
+
     /*
     private void SteerHelper()
     {
@@ -433,4 +457,18 @@ public class CarMove3 : MonoBehaviour
             }
         }
     }*/
+
+    public void GetBoostMini()
+    {
+        BoostQuantity += 12;
+        if (BoostQuantity > 100)
+        {
+            BoostQuantity = 100;
+        }
+    }
+
+    public void GetBoostMax()
+    {
+        BoostQuantity = 100;
+    }
 }

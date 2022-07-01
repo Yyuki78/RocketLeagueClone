@@ -79,6 +79,7 @@
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\Scripts\BodyTrigger.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\CameraController1.cs" />
     <Compile Include="Assets\Scripts\CarAirMove.cs" />
     <Compile Include="Assets\Scripts\CarJumpMove.cs" />
     <Compile Include="Assets\Scripts\CarMove.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\Scripts\CarMove3.cs" />
     <Compile Include="Assets\Scripts\CarState.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GetBoost.cs" />
     <Compile Include="Assets\Scripts\HoverCarControl.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />

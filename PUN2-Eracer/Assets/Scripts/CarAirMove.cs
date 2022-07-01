@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CarAirMove : MonoBehaviour
 {
-    private bool isUseDamperTorque = true;
-
     private float _inputRoll = 0;
     private float _inputPitch = 0;
     private float _inputYaw = 0;
@@ -14,15 +12,17 @@ public class CarAirMove : MonoBehaviour
     private CarState _state;
     private CarMove3 _move;
 
-    private float BoostVal = 10;
-    private float DebugF = 2f;
+    private float BoostVal = 10f;
+    [SerializeField] float DividedNum = 1.75f;
 
-    const float Tr = 36.07956616966136f; // torque coefficient for roll
-    const float Tp = 12.14599781908070f; // torque coefficient for pitch
-    const float Ty = 8.91962804287785f; // torque coefficient for yaw
-    const float Dr = -4.47166302201591f; // drag coefficient for roll
-    const float Dp = -2.798194258050845f; // drag coefficient for pitch
-    const float Dy = -1.886491900437232f; // drag coefficient for yaw
+    private const float Tr = 36.1f; // 左右回転の回転量
+    private const float Dr = -4.5f; // 左右回転の逆回転量
+
+    private const float Tp = 12.1f; // 旋回の回転量
+    private const float Dp = -2.8f; // 旋回の逆回転量
+
+    private const float Ty = 9.0f; // 前後回転の回転量
+    private const float Dy = -1.9f; // 前後回転の逆回転量
 
     void Start()
     {
@@ -37,6 +37,7 @@ public class CarAirMove : MonoBehaviour
         _inputPitch = GameManager.InputManager.pitchInput;
         _inputRoll = GameManager.InputManager.rollInput;
 
+        //エアロール
         if (GameManager.InputManager.isAirRoll)
         {
             _inputRoll = -_inputYaw;
@@ -49,21 +50,28 @@ public class CarAirMove : MonoBehaviour
         if (_state.IsDrive) return;
 
         //AirBoost
-        if (GameManager.InputManager.isBoost && _rigidbody.velocity.magnitude < _move.m_Topspeed2 - 0.1f)
+        if (GameManager.InputManager.isBoost && _move.BoostQuantity > 0)
         {
-            _rigidbody.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
+            if (_rigidbody.velocity.magnitude < _move.m_Topspeed2 - 0.1f)
+            {
+                _rigidbody.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
+            }
+            else
+            {
+                _rigidbody.AddForce(BoostVal * transform.forward / 2f, ForceMode.Acceleration);
+            }
         }
 
-        // roll
-        _rigidbody.AddTorque(Tr * _inputRoll * transform.forward / DebugF, ForceMode.Acceleration);
-        if (isUseDamperTorque) _rigidbody.AddTorque(Dr * transform.InverseTransformDirection(_rigidbody.angularVelocity).z * transform.forward / DebugF, ForceMode.Acceleration);
+        // roll 左右回転
+        _rigidbody.AddTorque(Tr * _inputRoll * transform.forward / DividedNum, ForceMode.Acceleration);
+        _rigidbody.AddTorque(Dr * transform.InverseTransformDirection(_rigidbody.angularVelocity).z * transform.forward / DividedNum, ForceMode.Acceleration);
 
-        // pitch
-        _rigidbody.AddTorque(Tp * _inputPitch * transform.right / DebugF, ForceMode.Acceleration);
-        if (isUseDamperTorque) _rigidbody.AddTorque(transform.right * (Dp * (1 - Mathf.Abs(_inputPitch)) * transform.InverseTransformDirection(_rigidbody.angularVelocity).x) / DebugF, ForceMode.Acceleration);
+        // pitch 旋回
+        _rigidbody.AddTorque(Tp * _inputPitch * transform.right / DividedNum, ForceMode.Acceleration);
+        _rigidbody.AddTorque(transform.right * (Dp * (1 - Mathf.Abs(_inputPitch)) * transform.InverseTransformDirection(_rigidbody.angularVelocity).x) / DividedNum, ForceMode.Acceleration);
 
-        //yaw
-        _rigidbody.AddTorque(Ty * _inputYaw * transform.up / DebugF, ForceMode.Acceleration);
-        if (isUseDamperTorque) _rigidbody.AddTorque(transform.up * (Dy * (1 - Mathf.Abs(_inputYaw)) * transform.InverseTransformDirection(_rigidbody.angularVelocity).y) / DebugF, ForceMode.Acceleration);
+        //yaw 前回転後ろ回転
+        _rigidbody.AddTorque(Ty * _inputYaw * transform.up / DividedNum, ForceMode.Acceleration);
+        _rigidbody.AddTorque(transform.up * (Dy * (1 - Mathf.Abs(_inputYaw)) * transform.InverseTransformDirection(_rigidbody.angularVelocity).y) / DividedNum, ForceMode.Acceleration);
     }
 }
