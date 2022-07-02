@@ -254,7 +254,7 @@ public class CarMove3 : MonoBehaviour
                 BoostQuantity = 0;
                 return;
             }
-            BoostQuantity -= 0.5f;
+            BoostQuantity -= 0.4f;
         }
 
         if (GameManager.InputManager.isBoost && m_Rigidbody.velocity.magnitude < m_Topspeed2 && BoostQuantity > 0)

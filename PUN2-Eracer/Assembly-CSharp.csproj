@@ -88,6 +88,8 @@
     <Compile Include="Assets\Scripts\CarState.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GetBoost.cs" />
+    <Compile Include="Assets\Scripts\GoalPerformance.cs" />
+    <Compile Include="Assets\Scripts\GoalTrigger.cs" />
     <Compile Include="Assets\Scripts\HoverCarControl.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />

@@ -52,6 +52,13 @@ public class CarAirMove : MonoBehaviour
         //AirBoost
         if (GameManager.InputManager.isBoost && _move.BoostQuantity > 0)
         {
+            _move.BoostQuantity -= 0.4f;
+            if (_move.BoostQuantity <= 0)
+            {
+                _move.BoostQuantity = 0;
+                return;
+            }
+
             if (_rigidbody.velocity.magnitude < _move.m_Topspeed2 - 0.1f)
             {
                 _rigidbody.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
