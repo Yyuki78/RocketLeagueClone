@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\BodyTrigger.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CameraController1.cs" />
+    <Compile Include="Assets\Scripts\CameraTarget.cs" />
     <Compile Include="Assets\Scripts\CarAirMove.cs" />
     <Compile Include="Assets\Scripts\CarJumpMove.cs" />
     <Compile Include="Assets\Scripts\CarMove.cs" />

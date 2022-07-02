@@ -12,6 +12,7 @@ public class CameraController1 : MonoBehaviour
 
     private Vector3 _lastCarTransform;
     [SerializeField] GameObject RocketCar;
+    private CarState _state;
     private Transform _carLocalTransform;
     private Vector3 _DifferenceTransform;
 
@@ -20,6 +21,7 @@ public class CameraController1 : MonoBehaviour
     {
         _carCameraTransform = CarCameraObj.GetComponent<Transform>();
         _carLocalTransform = RocketCar.GetComponent<Transform>();
+        _state = RocketCar.GetComponent<CarState>();
     }
 
     // Update is called once per frame
@@ -36,12 +38,19 @@ public class CameraController1 : MonoBehaviour
             _carCamera.Priority = 10;
             _ballCamera.Priority = 5;
         }
+        /*
+        _carCameraTransform.transform.position = _carLocalTransform.position + new Vector3(0, 1, -3f);
+        if (_state.IsDrive)
+        {
+            _carCameraTransform.transform.rotation = _carLocalTransform.rotation;
+        }
         if (GameManager.InputManager.throttleInput < 0)
         {
             if (GameManager.InputManager.isBoost) return;
-            _carCameraTransform.transform.position -= _carLocalTransform.position;
+            //_carCameraTransform.transform.position -= _carLocalTransform.position;
         }
 
         _lastCarTransform = _carLocalTransform.position;
+        */
     }
 }
