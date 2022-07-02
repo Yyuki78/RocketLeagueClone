@@ -28,9 +28,10 @@ namespace UnityStandardAssets.Effects
                     rigidbodies.Add(col.attachedRigidbody);
                 }
             }
+            var impulsePos = transform.position - new Vector3(0, -3f, 0);
             foreach (var rb in rigidbodies)
             {
-                rb.AddExplosionForce(explosionForce*multiplier, transform.position, r, 1*multiplier, ForceMode.Impulse);
+                rb.AddExplosionForce(explosionForce*multiplier, impulsePos, r, 1*multiplier, ForceMode.Impulse);
             }
         }
     }
