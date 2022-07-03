@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 9980058}
   - component: {fileID: 9980057}
   m_Layer: 0
-  m_Name: BallCamera2
+  m_Name: BallCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,8 +259,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9980056}
-  m_LocalRotation: {x: 0.12745002, y: 0.05484906, z: -0.00705897, w: 0.9903021}
-  m_LocalPosition: {x: -2.8194504, y: -8.884676, z: 13.130514}
+  m_LocalRotation: {x: 0.13185124, y: 0.054818965, z: -0.00730298, w: 0.98972565}
+  m_LocalPosition: {x: -2.8182068, y: -8.841719, z: 13.141893}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1052310169}
@@ -5368,7 +5368,7 @@ GameObject:
   - component: {fileID: 121220327}
   - component: {fileID: 121220328}
   m_Layer: 0
-  m_Name: RocketCar
+  m_Name: RocketCar2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13913,7 +13913,6 @@ Transform:
   - {fileID: 1599479346}
   - {fileID: 2095264745}
   - {fileID: 9980058}
-  - {fileID: 1181949566}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13944,7 +13943,7 @@ GameObject:
   - component: {fileID: 688848343}
   - component: {fileID: 688848344}
   m_Layer: 0
-  m_Name: CarCamera
+  m_Name: CarCamera2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16708,8 +16707,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.22975291, y: 1e-45, z: -0, w: 0.973249}
-  m_LocalPosition: {x: -2.2852783, y: -9.150688, z: 14.937996}
+  m_LocalRotation: {x: 0.22975291, y: -0, z: -0, w: 0.973249}
+  m_LocalPosition: {x: -2.2852783, y: -8.650688, z: 14.937996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 681228949}
@@ -17882,7 +17881,7 @@ GameObject:
   - component: {fileID: 1181949566}
   - component: {fileID: 1181949565}
   m_Layer: 0
-  m_Name: CarCamera2
+  m_Name: CarCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17906,8 +17905,8 @@ MonoBehaviour:
   m_StreamingVersion: 20170927
   m_Priority: 10
   m_StandbyUpdate: 2
-  m_LookAt: {fileID: 2082074838}
-  m_Follow: {fileID: 2082074838}
+  m_LookAt: {fileID: 1627799636}
+  m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 70
     OrthographicSize: 5
@@ -17930,13 +17929,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181949564}
-  m_LocalRotation: {x: 0.22975291, y: 1e-45, z: -0, w: 0.973249}
-  m_LocalPosition: {x: -2.2852783, y: -9.150688, z: 14.937996}
+  m_LocalRotation: {x: 0.22975291, y: -0, z: -0, w: 0.973249}
+  m_LocalPosition: {x: 0, y: 1.5, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1403440346}
-  m_Father: {fileID: 681228949}
-  m_RootOrder: 10
+  m_Father: {fileID: 1627799636}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1183696064 stripped
 GameObject:
@@ -20034,12 +20033,12 @@ GameObject:
   - component: {fileID: 1389471246}
   - component: {fileID: 1389471245}
   m_Layer: 0
-  m_Name: BallCamera
+  m_Name: BallCamera2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1389471245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20082,8 +20081,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1389471244}
-  m_LocalRotation: {x: 0.18216555, y: 0.042703234, z: -0.007919163, w: 0.9823082}
-  m_LocalPosition: {x: -2.6903305, y: -7.3578796, z: 12.7880745}
+  m_LocalRotation: {x: 0.19575901, y: 0.05760771, z: -0.011520416, w: 0.9788907}
+  m_LocalPosition: {x: -2.826645, y: -7.227785, z: 12.854399}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1089623920}
@@ -20100,7 +20099,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1403440346}
   - component: {fileID: 1403440349}
-  - component: {fileID: 1403440348}
   - component: {fileID: 1403440347}
   m_Layer: 0
   m_Name: cm
@@ -20124,28 +20122,6 @@ Transform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1403440347
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1403440345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 1.5, z: -3}
-  m_XDamping: 1
-  m_YDamping: 0.5
-  m_ZDamping: 0.5
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
---- !u!114 &1403440348
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29796,7 +29772,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 95, y: 10, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1181949566}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32192,7 +32169,7 @@ GameObject:
   - component: {fileID: 2082074833}
   - component: {fileID: 2082074835}
   m_Layer: 8
-  m_Name: RocketCar2
+  m_Name: RocketCar
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
