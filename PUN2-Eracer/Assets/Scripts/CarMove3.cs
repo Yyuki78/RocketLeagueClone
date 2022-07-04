@@ -367,6 +367,8 @@ public class CarMove3 : MonoBehaviour
         }
         else
         {
+            driftSteerTime = 0f;
+
             m_WheelColliders[0].steerAngle = m_SteerAngle;
             m_WheelColliders[1].steerAngle = m_SteerAngle;
             m_WheelColliders[2].steerAngle = 0;
@@ -470,5 +472,12 @@ public class CarMove3 : MonoBehaviour
     public void GetBoostMax()
     {
         BoostQuantity = 100;
+    }
+
+    public void Respown()
+    {
+        m_Rigidbody.velocity = Vector3.zero;
+        m_Rigidbody.angularVelocity = Vector3.zero;
+        BoostQuantity = 30f;
     }
 }

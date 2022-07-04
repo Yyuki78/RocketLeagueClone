@@ -11,12 +11,12 @@ public class GoalPerformance : MonoBehaviour
     private Rigidbody _ballRigidbody;
     [SerializeField] GameObject MyCar;
     private Rigidbody _carRigidbody;
+    private CarMove3 _move;
     [SerializeField] GameObject Explosion;
 
     private float respownPoint = 0;//リスポーンする場所 ソロは1つずつ増える
 
     private bool startCol = false;
-    private Vector3 ParticlePos;
     private Quaternion CarRotation;
 
     // Start is called before the first frame update
@@ -24,6 +24,7 @@ public class GoalPerformance : MonoBehaviour
     {
         _ballRigidbody = Ball.GetComponent<Rigidbody>();
         _carRigidbody = MyCar.GetComponent<Rigidbody>();
+        _move = MyCar.GetComponent<CarMove3>();
     }
 
     // Update is called once per frame
@@ -41,6 +42,9 @@ public class GoalPerformance : MonoBehaviour
 
     private IEnumerator GoalEffect()
     {
+        //爆発演出
+        var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
+
         //リセット
         Ball.transform.position = new Vector3(100f, 10.4f, 30f);
         Ball.transform.rotation = new Quaternion(0, 0, 0, 1);
@@ -48,29 +52,21 @@ public class GoalPerformance : MonoBehaviour
         _ballRigidbody.angularVelocity = Vector3.zero;
         Ball.SetActive(false);
 
-        if (isGoalBlue)
-        {
-            ParticlePos = new Vector3(100f, 12f, -28f);
-        }
-        else if (isGoalRed)
-        {
-            ParticlePos = new Vector3(100f, 12f, 88f);
-        }
-
-        //爆発演出
-        var explosion = Instantiate(Explosion, ParticlePos, Quaternion.identity, this.gameObject.transform);
-
         yield return new WaitForSeconds(0.2f);
 
         yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSeconds(0.8f);
         Destroy(explosion);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.2f);
 
         //リスタート
         isGoalBlue = false;
         isGoalRed = false;
 
         Ball.SetActive(true);
+        //偶にラグでリセットされてない時があるので二回
+        _ballRigidbody.velocity = Vector3.zero;
+        _ballRigidbody.angularVelocity = Vector3.zero;
         switch (respownPoint)
         {
             case 0:
@@ -103,8 +99,7 @@ public class GoalPerformance : MonoBehaviour
             respownPoint = 0;
         }
         MyCar.transform.rotation = CarRotation;
-        _carRigidbody.velocity = Vector3.zero;
-        _carRigidbody.angularVelocity = Vector3.zero;
+        _move.Respown();
 
         yield return new WaitForSeconds(0.2f);
         startCol = false;

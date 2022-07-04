@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CameraController1.cs" />
     <Compile Include="Assets\Scripts\CameraTarget.cs" />
+    <Compile Include="Assets\Scripts\Canvas\BoostDrawing.cs" />
     <Compile Include="Assets\Scripts\CarAirMove.cs" />
     <Compile Include="Assets\Scripts\CarJumpMove.cs" />
     <Compile Include="Assets\Scripts\CarMove.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Assets\Scripts\Test\Projectile.cs" />
     <Compile Include="Assets\Scripts\Test\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Test\SampleScene.cs" />
+    <Compile Include="Assets\Scripts\Title\GoPracticeButton.cs" />
     <Compile Include="Assets\Scripts\WheelForce.cs" />
     <Compile Include="Assets\Scripts\WheelForce2.cs" />
     <Compile Include="Assets\Scripts\WheelTrigger.cs" />
