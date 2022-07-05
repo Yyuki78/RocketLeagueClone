@@ -37,7 +37,7 @@ public class CarMove3 : MonoBehaviour
     private const float k_ReversingThreshold = 0.01f;
 
     public float m_Topspeed2 = 23;
-    private bool holdSpeed = false;
+    public bool holdSpeed = false;//CarParticleSystemでも使用
 
     public bool Skidding { get; private set; }
     public float BrakeInput { get; private set; }
@@ -342,8 +342,8 @@ public class CarMove3 : MonoBehaviour
             {
                 m_SteerAngle -= ((m_Rigidbody.velocity.magnitude) /4);
             }*/
-            m_WheelColliders[2].steerAngle = -m_SteerAngle / 10;
-            m_WheelColliders[3].steerAngle = -m_SteerAngle / 10;
+            m_WheelColliders[2].steerAngle = -m_SteerAngle / 5;
+            m_WheelColliders[3].steerAngle = -m_SteerAngle / 5;
 
             //m_WheelColliders[2].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
             //m_WheelColliders[3].steerAngle = -Mathf.Abs(m_SteerAngle) * driftSteer / 12;
@@ -478,6 +478,6 @@ public class CarMove3 : MonoBehaviour
     {
         m_Rigidbody.velocity = Vector3.zero;
         m_Rigidbody.angularVelocity = Vector3.zero;
-        BoostQuantity = 30f;
+        BoostQuantity = 33f;
     }
 }

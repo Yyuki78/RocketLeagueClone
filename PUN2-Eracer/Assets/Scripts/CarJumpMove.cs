@@ -10,6 +10,9 @@ public class CarJumpMove : MonoBehaviour
     //入力量
     private float throttle, steer;
 
+    public bool Jumping = false;//1stJumpしたかどうか　CarParticleSystemで使用
+    public bool SecondJumping = false;//2ndJumpしたかどうか　CarParticleSystemで使用
+
     [SerializeField] private bool isJumping = false;//ジャンプ中か
     [SerializeField] private bool isFliping = false;//フリップ中か
     [SerializeField] private bool _firstJump = false;//一回目のジャンプ
@@ -109,6 +112,7 @@ public class CarJumpMove : MonoBehaviour
         //ボタンを押し込む量によって呼ばれる回数が変わるので、くしくも元のゲームの再現になった
         if (GameManager.InputManager.isJump && _firstJump && !isJumping && _canFirstJump)
         {
+            Jumping = true;
             //VelocityChangeはImpulseの質量無視版
             _rigidbody.AddForceAtPosition(transform.up * 1.0f * jumpForceVal, transform.position, ForceMode.VelocityChange);
             _firstJump = false;
@@ -130,6 +134,7 @@ public class CarJumpMove : MonoBehaviour
         //セカンドジャンプ
         if (GameManager.InputManager.isJump && _secondJump && _canSecondJump && once)
         {
+            SecondJumping = true;
             //0は上,1は前2は後ろ,3は右,4は左,5は右前,6は左前,7は右後ろ,8は左後ろ
             if (throttle > 0.1f)
             {

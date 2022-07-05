@@ -42,6 +42,7 @@ public class GoalPerformance : MonoBehaviour
 
     private IEnumerator GoalEffect()
     {
+        Time.timeScale = 0.25f;
         //爆発演出
         var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
 
@@ -52,8 +53,8 @@ public class GoalPerformance : MonoBehaviour
         _ballRigidbody.angularVelocity = Vector3.zero;
         Ball.SetActive(false);
 
-        yield return new WaitForSeconds(0.2f);
-
+        yield return new WaitForSeconds(0.1f);
+        Time.timeScale = 1.0f;
         yield return new WaitForSeconds(1.8f);
         yield return new WaitForSeconds(0.8f);
         Destroy(explosion);
