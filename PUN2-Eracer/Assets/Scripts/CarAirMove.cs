@@ -59,14 +59,7 @@ public class CarAirMove : MonoBehaviour
                 return;
             }
 
-            if (_rigidbody.velocity.magnitude < _move.m_Topspeed2 - 0.1f)
-            {
-                _rigidbody.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
-            }
-            else
-            {
-                _rigidbody.AddForce(BoostVal * transform.forward / 2f, ForceMode.Acceleration);
-            }
+            _rigidbody.AddForce(BoostVal * transform.forward, ForceMode.Acceleration);
         }
 
         // roll 左右回転

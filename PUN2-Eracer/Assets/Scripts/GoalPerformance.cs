@@ -46,6 +46,7 @@ public class GoalPerformance : MonoBehaviour
         //爆発演出
         var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
 
+        Ball.SetActive(false);
         //リセット
         Ball.transform.position = new Vector3(100f, 10.4f, 30f);
         Ball.transform.rotation = new Quaternion(0, 0, 0, 1);

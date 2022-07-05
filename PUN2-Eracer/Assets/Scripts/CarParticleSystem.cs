@@ -40,6 +40,7 @@ public class CarParticleSystem : MonoBehaviour
 
         if (_jump.Jumping)
         {
+            JumpParticle.SetActive(true);
             StartCoroutine(StopParticle1());
         }
         else
@@ -90,8 +91,6 @@ public class CarParticleSystem : MonoBehaviour
 
     private IEnumerator StopParticle1()
     {
-        JumpParticle.transform.position = transform.position;
-        JumpParticle.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         _jump.Jumping = false;
     }
