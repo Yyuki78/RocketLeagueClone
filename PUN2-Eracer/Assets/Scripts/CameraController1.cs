@@ -16,6 +16,9 @@ public class CameraController1 : MonoBehaviour
     private Transform _carLocalTransform;
     private Vector3 _DifferenceTransform;
 
+    [SerializeField] int Mode;//0なら練習,1なら試合
+    [SerializeField] GameObject CameraText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +35,15 @@ public class CameraController1 : MonoBehaviour
         {
             _carCamera.Priority = 5;
             _ballCamera.Priority = 10;
+            if (Mode == 0)
+                CameraText.SetActive(true);
         }
         else
         {
             _carCamera.Priority = 10;
             _ballCamera.Priority = 5;
+            if (Mode == 0)
+                CameraText.SetActive(false);
         }
         /*
         _carCameraTransform.transform.position = _carLocalTransform.position + new Vector3(0, 1, -3f);

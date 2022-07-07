@@ -13,7 +13,7 @@ public class GetBoost : MonoBehaviour
     [SerializeField] Material _white;
     [SerializeField] Material _yellow;
 
-    [SerializeField] MeshRenderer _materialChild;
+    [SerializeField] GameObject _MaxBoostBall;
 
     // Start is called before the first frame update
     void Start()
@@ -74,9 +74,9 @@ public class GetBoost : MonoBehaviour
         }
         else
         {
-            _materialChild.material = _white;
+            _MaxBoostBall.SetActive(false);
             yield return new WaitForSeconds(10f);
-            _materialChild.material = _yellow;
+            _MaxBoostBall.SetActive(true);
         }
         _material.material = _yellow;
         enable = true;

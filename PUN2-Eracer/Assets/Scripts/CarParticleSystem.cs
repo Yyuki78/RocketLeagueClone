@@ -67,7 +67,7 @@ public class CarParticleSystem : MonoBehaviour
             WindParticle.SetActive(false);
         }
 
-        if (Mathf.Abs(GameManager.InputManager.steerInput) >= 0.2f && _state.IsDrive)
+        if (Mathf.Abs(GameManager.InputManager.steerInput) >= 0.2f && _state.IsDrive && Mathf.Abs(_rigidbody.velocity.magnitude) > 1f)
         {
             SteerParticles.SetActive(true);
         }

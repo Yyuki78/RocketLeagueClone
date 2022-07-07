@@ -13,6 +13,7 @@ public class GoalPerformance : MonoBehaviour
     private Rigidbody _carRigidbody;
     private CarMove3 _move;
     [SerializeField] GameObject Explosion;
+    [SerializeField] GameObject BallFallPoint;
 
     private float respownPoint = 0;//リスポーンする場所 ソロは1つずつ増える
 
@@ -47,18 +48,19 @@ public class GoalPerformance : MonoBehaviour
         var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
 
         Ball.SetActive(false);
-        //リセット
-        Ball.transform.position = new Vector3(100f, 10.4f, 30f);
-        Ball.transform.rotation = new Quaternion(0, 0, 0, 1);
-        _ballRigidbody.velocity = Vector3.zero;
-        _ballRigidbody.angularVelocity = Vector3.zero;
-        Ball.SetActive(false);
+        BallFallPoint.SetActive(false);
 
         yield return new WaitForSeconds(0.1f);
         Time.timeScale = 1.0f;
         yield return new WaitForSeconds(1.8f);
         yield return new WaitForSeconds(0.8f);
         Destroy(explosion);
+        //リセット
+        Ball.transform.position = new Vector3(100f, 10.4f, 30f);
+        Ball.transform.rotation = new Quaternion(0, 0, 0, 1);
+        _ballRigidbody.velocity = Vector3.zero;
+        _ballRigidbody.angularVelocity = Vector3.zero;
+        Ball.SetActive(false);
         yield return new WaitForSeconds(0.2f);
 
         //リスタート
@@ -66,6 +68,7 @@ public class GoalPerformance : MonoBehaviour
         isGoalRed = false;
 
         Ball.SetActive(true);
+        BallFallPoint.SetActive(true);
         //偶にラグでリセットされてない時があるので二回
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
