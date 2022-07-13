@@ -10,6 +10,7 @@ public class CameraTarget : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        RocketCar = GameObject.FindWithTag("Player");
         _carLocalTransform = RocketCar.GetComponent<Transform>();
         _state = RocketCar.GetComponent<CarState>();
     }

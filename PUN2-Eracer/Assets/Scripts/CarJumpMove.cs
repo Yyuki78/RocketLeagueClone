@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class CarJumpMove : MonoBehaviour
+public class CarJumpMove : MonoBehaviourPunCallbacks
 {
     //威力調整用
     [SerializeField] float jumpForceVal = 1f;
@@ -29,29 +31,57 @@ public class CarJumpMove : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private CarState _state;
+    private CarMove3 _move;
 
     void Start()
     {
         _rigidbody = GetComponentInParent<Rigidbody>();
         _state = GetComponent<CarState>();
+        _move = GetComponent<CarMove3>();
     }
 
     //今回使用する力は全て瞬間なのでUpdateでも問題はない
     private void Update()
     {
-        JumpVariables();
+        if (_move.IsOnline)
+        {
+            if (photonView.IsMine)
+            {
+                JumpVariables();
 
-        Jump();
+                Jump();
 
-        SecondJump();
+                SecondJump();
 
-        JumpBackToTheFeet();
+                JumpBackToTheFeet();
+            }
+        }
+        else
+        {
+            JumpVariables();
+
+            Jump();
+
+            SecondJump();
+
+            JumpBackToTheFeet();
+        }
     }
 
     //フリップの回転だけは加速なのでFixedUpdateで行う
     private void FixedUpdate()
     {
-        FlipAnimetion();
+        if (_move.IsOnline)
+        {
+            if (photonView.IsMine)
+            {
+                FlipAnimetion();
+            }
+        }
+        else
+        {
+            FlipAnimetion();
+        }
     }
 
     private void JumpVariables()

@@ -94,8 +94,15 @@
     <Compile Include="Assets\Scripts\GetBoost.cs" />
     <Compile Include="Assets\Scripts\GoalPerformance.cs" />
     <Compile Include="Assets\Scripts\GoalTrigger.cs" />
+    <Compile Include="Assets\Scripts\HintText.cs" />
     <Compile Include="Assets\Scripts\HoverCarControl.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Online\BallDebug.cs" />
+    <Compile Include="Assets\Scripts\Online\OnlineGameManager.cs" />
+    <Compile Include="Assets\Scripts\Online\PhotonMatching1v1.cs" />
+    <Compile Include="Assets\Scripts\Online\RequestBallOwner.cs" />
+    <Compile Include="Assets\Scripts\PracticeButtons.cs" />
+    <Compile Include="Assets\Scripts\PracticeEscKey.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerManager.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerProperty.cs" />

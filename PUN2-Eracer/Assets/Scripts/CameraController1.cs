@@ -19,12 +19,26 @@ public class CameraController1 : MonoBehaviour
     [SerializeField] int Mode;//0なら練習,1なら試合
     [SerializeField] GameObject CameraText;
 
+    CinemachineTargetGroup cinemachineTargetGroup;
+
     // Start is called before the first frame update
     void Start()
     {
-        _carCameraTransform = CarCameraObj.GetComponent<Transform>();
-        _carLocalTransform = RocketCar.GetComponent<Transform>();
-        _state = RocketCar.GetComponent<CarState>();
+        if (Mode == 0)
+        {
+            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
+            _carLocalTransform = RocketCar.GetComponent<Transform>();
+            _state = RocketCar.GetComponent<CarState>();
+        }
+        else
+        {
+            RocketCar = GameObject.FindWithTag("Player");
+            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
+            _carLocalTransform = RocketCar.GetComponent<Transform>();
+            _state = RocketCar.GetComponent<CarState>();
+            cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+            cinemachineTargetGroup.AddMember(RocketCar.transform,1,1);
+        }
     }
 
     // Update is called once per frame

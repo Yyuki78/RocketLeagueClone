@@ -15,6 +15,7 @@ public class BoostDrawing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        RocketCar = GameObject.FindWithTag("Player");
         _text = GetComponent<TextMeshProUGUI>();
         _move = RocketCar.GetComponent<CarMove3>();
         _text.text = _move.BoostQuantity.ToString();
