@@ -13,7 +13,6 @@ public class CarParticleSystem : MonoBehaviourPunCallbacks
     [SerializeField] GameObject JumpParticle;
     [SerializeField] GameObject SteerParticles;
 
-    [SerializeField] GameObject RocketCar;
     private CarMove3 _move;
     private CarState _state;
     private Rigidbody _rigidbody;
@@ -22,10 +21,10 @@ public class CarParticleSystem : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        _move = RocketCar.GetComponent<CarMove3>();
-        _state = RocketCar.GetComponent<CarState>();
-        _rigidbody = RocketCar.GetComponent<Rigidbody>();
-        _jump = RocketCar.GetComponent<CarJumpMove>();
+        _move = GetComponentInParent<CarMove3>();
+        _state = GetComponentInParent<CarState>();
+        _rigidbody = GetComponentInParent<Rigidbody>();
+        _jump = GetComponentInParent<CarJumpMove>();
     }
 
     // Update is called once per frame

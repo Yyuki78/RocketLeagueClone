@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\CarMove3.cs" />
     <Compile Include="Assets\Scripts\CarParticleSystem.cs" />
     <Compile Include="Assets\Scripts\CarState.cs" />
+    <Compile Include="Assets\Scripts\ChangeCarColor.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GetBoost.cs" />
     <Compile Include="Assets\Scripts\GoalPerformance.cs" />

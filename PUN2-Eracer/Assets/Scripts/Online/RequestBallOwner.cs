@@ -4,27 +4,44 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class RequestBallOwner : MonoBehaviourPunCallbacks,IOnPhotonViewOwnerChange
+public class RequestBallOwner : MonoBehaviourPunCallbacks
 {
-    [SerializeField] PhotonView _myPhotonView;
+    private PhotonView _myPhotonView;
     private PhotonView _photonView;
-
-    [SerializeField] GameObject BodyM;
+    private BallDebug _ballDebug;
 
     private bool canChange = true;
+
+    private GameObject Ball;
+
+    private float distance = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _myPhotonView = GetComponentInParent<PhotonView>();
+        Ball = GameObject.FindWithTag("Ball");
+        _photonView = Ball.GetComponent<PhotonView>();
+        _ballDebug = Ball.GetComponent<BallDebug>();
     }
-    
+
+    private void FixedUpdate()
+    {
+        distance = Mathf.Sqrt(Mathf.Pow(gameObject.transform.position.x - Ball.transform.position.x, 2) + Mathf.Pow(gameObject.transform.position.y - Ball.transform.position.y, 2) + Mathf.Pow(gameObject.transform.position.z - Ball.transform.position.z, 2));
+        if (distance > 5f)
+        {
+            canChange = true;
+            _ballDebug.once = true;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 9)
         {
             Debug.Log("ボールと接触");
-            _photonView = other.gameObject.GetComponent<PhotonView>();
+            //_photonView = other.gameObject.GetComponentInParent<PhotonView>();
+            
             /*_photonView = collision.gameObject.GetComponent<PhotonView>();
             var player = _photonView.Owner;
             PhotonNetwork.SetMasterClient(player);
@@ -33,60 +50,21 @@ public class RequestBallOwner : MonoBehaviourPunCallbacks,IOnPhotonViewOwnerChan
             if (_photonView.IsMine) return;
             _photonView.RequestOwnership();
             */
+
             if (_photonView.IsMine) return;
+            if (!_myPhotonView.IsMine) return;
             if (!canChange) return;
-            if (_photonView.Owner == gameObject.GetComponent<PhotonView>().Owner) return;
+            //if (_photonView.Owner == gameObject.GetComponent<PhotonView>().Owner) return;
             // 所有権の移譲
             ////////other.gameObject.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer);
-            other.gameObject.GetComponent<BallDebug>().ChangeOwner(PhotonNetwork.LocalPlayer);
+
+            //other.gameObject.GetComponent<BallDebug>().ChangeOwner(PhotonNetwork.LocalPlayer);
+
+            _ballDebug.ChangeOwner(PhotonNetwork.LocalPlayer);
+
             Debug.Log(PhotonNetwork.LocalPlayer);
             canChange = false;
+            //PhotonNetwork.SetMasterClient(PhotonNetwork.LocalPlayer);
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        StartCoroutine(coolDown());
-    }
-
-    private IEnumerator coolDown()
-    {
-        yield return new WaitForSeconds(0.5f);
-        canChange = true;
-        yield break;
-    }
-    /*
-    private void sendOwner(GameObject obj)//人形に所有者を渡すための関数
-    {
-        DollSync dollSync = obj.GetComponent<DollSync>();//スクリプトを取得する
-        if (dollSync == null) return;//人形用のスクリプトを持っていなかったらreturnする
-        dollSync.ChangeOwner(PhotonNetwork.LocalPlayer);
-
-    }*/
-
-    public void ChangeOwner(Player NewOwner)
-    {
-        // 所有権の移譲
-        gameObject.GetComponent<PhotonView>().TransferOwnership(NewOwner);
-    }
-
-    void IOnPhotonViewOwnerChange.OnOwnerChange(Player newOwner, Player previousOwner)//所有者が変わったことを知らせる関数
-    {
-        string objectName = $"{photonView.name}({photonView.ViewID})";
-        string oldName = previousOwner.NickName;
-        string newName = newOwner.NickName;
-        Debug.Log($"{objectName} の所有者が {oldName} から {newName} に変更されました");
-    }
-
-    //PhotonView.OwnershipTransfer == OwnershipOption.Request の時に呼ばれる
-    public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
-    {
-
-    }
-
-    //PhotonView.OwnershipTransfer == OwnershipOption.Takeover の時に呼ばれる
-    public void OnOwnershipTransfered(PhotonView targetView, Player previousOwner)
-    {
-        
     }
 }

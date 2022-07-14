@@ -21,29 +21,18 @@ public class CameraController1 : MonoBehaviour
 
     CinemachineTargetGroup cinemachineTargetGroup;
 
+    private bool waitRag = true;
+
     // Start is called before the first frame update
     void Start()
     {
-        if (Mode == 0)
-        {
-            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
-            _carLocalTransform = RocketCar.GetComponent<Transform>();
-            _state = RocketCar.GetComponent<CarState>();
-        }
-        else
-        {
-            RocketCar = GameObject.FindWithTag("Player");
-            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
-            _carLocalTransform = RocketCar.GetComponent<Transform>();
-            _state = RocketCar.GetComponent<CarState>();
-            cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
-            cinemachineTargetGroup.AddMember(RocketCar.transform,1,1);
-        }
+        Invoke("Set", 0.2f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (waitRag) return;
         _DifferenceTransform = _carLocalTransform.position - _lastCarTransform;
         if (GameManager.InputManager.isSwitchCamera)
         {
@@ -73,5 +62,25 @@ public class CameraController1 : MonoBehaviour
 
         _lastCarTransform = _carLocalTransform.position;
         */
+    }
+
+    private void Set()
+    {
+        if (Mode == 0)
+        {
+            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
+            _carLocalTransform = RocketCar.GetComponent<Transform>();
+            _state = RocketCar.GetComponent<CarState>();
+        }
+        else
+        {
+            RocketCar = GameObject.FindWithTag("Player");
+            _carCameraTransform = CarCameraObj.GetComponent<Transform>();
+            _carLocalTransform = RocketCar.GetComponent<Transform>();
+            _state = RocketCar.GetComponent<CarState>();
+            cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
+            cinemachineTargetGroup.AddMember(RocketCar.transform, 1, 1);
+        }
+        waitRag = false;
     }
 }
