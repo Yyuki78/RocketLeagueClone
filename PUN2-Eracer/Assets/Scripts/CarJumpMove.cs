@@ -43,6 +43,7 @@ public class CarJumpMove : MonoBehaviourPunCallbacks
     //今回使用する力は全て瞬間なのでUpdateでも問題はない
     private void Update()
     {
+        if (!_move.isMoving) return;
         if (_move.IsOnline)
         {
             if (photonView.IsMine)

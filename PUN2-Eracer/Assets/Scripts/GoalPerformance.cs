@@ -79,19 +79,19 @@ public class GoalPerformance : MonoBehaviour
                 CarRotation = Quaternion.identity;
                 break;
             case 1:
-                MyCar.transform.position = new Vector3(75f, 9.5f, 0f);
+                MyCar.transform.position = new Vector3(77.5f, 9.5f, 2.5f);
                 CarRotation = Quaternion.Euler(0, 45, 0);
                 break;
             case 2:
-                MyCar.transform.position = new Vector3(95f, 9.5f, -15f);
+                MyCar.transform.position = new Vector3(97f, 9.5f, -10f);
                 CarRotation = Quaternion.identity;
                 break;
             case 3:
-                MyCar.transform.position = new Vector3(125f, 9.5f, 0f);
+                MyCar.transform.position = new Vector3(122.5f, 9.5f, 2.5f);
                 CarRotation = Quaternion.Euler(0, -45, 0);
                 break;
             case 4:
-                MyCar.transform.position = new Vector3(105f, 9.5f, -15f);
+                MyCar.transform.position = new Vector3(103f, 9.5f, -10f);
                 CarRotation = Quaternion.identity;
                 break;
             default:

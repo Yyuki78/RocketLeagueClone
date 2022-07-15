@@ -34,6 +34,8 @@ public class CarMove3 : MonoBehaviourPunCallbacks
 
     public float BoostQuantity = 30;
 
+    public bool isMoving = true;
+
     // Use this for initialization
     private void Start()
     {
@@ -60,6 +62,7 @@ public class CarMove3 : MonoBehaviourPunCallbacks
 
     private void FixedUpdate()
     {
+        if (!isMoving) return;
         float h = GameManager.InputManager.steerInput;
         float v = GameManager.InputManager.throttleInput;
         float handbrake = 0;

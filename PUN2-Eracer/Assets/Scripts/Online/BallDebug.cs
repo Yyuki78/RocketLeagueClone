@@ -6,6 +6,12 @@ using Photon.Realtime;
 
 public class BallDebug : MonoBehaviourPun, IOnPhotonViewOwnerChange, IOnPhotonViewControllerChange
 {
+    private void Start()
+    {
+        PhotonNetwork.SendRate = 30;
+        PhotonNetwork.SerializationRate = 30;
+    }
+
     public bool once = true;
     public void ChangeOwner(Player NewOwner)
     {

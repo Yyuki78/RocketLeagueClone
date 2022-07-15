@@ -437,13 +437,14 @@ GameObject:
   - component: {fileID: 8058343236508956414}
   - component: {fileID: 8058343236508956410}
   - component: {fileID: -5144835818204416576}
+  - component: {fileID: 4040353284716525403}
   m_Layer: 8
   m_Name: RocketCar1v1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8058343236508956411
 Transform:
   m_ObjectHideFlags: 0
@@ -561,6 +562,7 @@ MonoBehaviour:
   m_Topspeed2: 22
   holdSpeed: 0
   BoostQuantity: 33
+  isMoving: 1
 --- !u!114 &8058343236508956410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,6 +602,18 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &4040353284716525403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058343236508956413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2232265545b140a4f9e04155c8f054e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8058343236640839045
 GameObject:
   m_ObjectHideFlags: 0

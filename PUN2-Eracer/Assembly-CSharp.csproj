@@ -99,14 +99,16 @@
     <Compile Include="Assets\Scripts\HoverCarControl.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
     <Compile Include="Assets\Scripts\Online\BallDebug.cs" />
+    <Compile Include="Assets\Scripts\Online\CarRpc.cs" />
+    <Compile Include="Assets\Scripts\Online\GamePlayerProperty.cs" />
     <Compile Include="Assets\Scripts\Online\OnlineGameManager.cs" />
+    <Compile Include="Assets\Scripts\Online\OnlineGoalTrigger.cs" />
     <Compile Include="Assets\Scripts\Online\PhotonMatching1v1.cs" />
     <Compile Include="Assets\Scripts\Online\RequestBallOwner.cs" />
     <Compile Include="Assets\Scripts\PracticeButtons.cs" />
     <Compile Include="Assets\Scripts\PracticeEscKey.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerManager.cs" />
-    <Compile Include="Assets\Scripts\Test\GamePlayerProperty.cs" />
     <Compile Include="Assets\Scripts\Test\GameRoomHUD.cs" />
     <Compile Include="Assets\Scripts\Test\GameRoomProperty.cs" />
     <Compile Include="Assets\Scripts\Test\Projectile.cs" />
