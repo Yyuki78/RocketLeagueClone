@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class GetBoost : MonoBehaviour
+public class GetBoost : MonoBehaviourPunCallbacks
 {
     //小ブーストか大ブーストか
     [SerializeField] int BoostObjType = 0;
@@ -30,16 +31,31 @@ public class GetBoost : MonoBehaviour
             var move = other.gameObject.GetComponentInParent<CarMove3>();
             if (move.BoostQuantity >= 100) return;
 
-            if (BoostObjType == 1)
+            if (move.IsOnline)
             {
-                move.GetBoostMini();
+                if (BoostObjType == 1)
+                {
+                    move.GetBoostMini();
+                }
+                else
+                {
+                    move.GetBoostMax();
+                }
+                photonView.RPC(nameof(RpcGetBoost), RpcTarget.All);
             }
             else
             {
-                move.GetBoostMax();
+                if (BoostObjType == 1)
+                {
+                    move.GetBoostMini();
+                }
+                else
+                {
+                    move.GetBoostMax();
+                }
+                enable = false;
+                StartCoroutine(CoolDown());
             }
-            enable = false;
-            StartCoroutine(CoolDown());
         }
     }
 
@@ -51,16 +67,31 @@ public class GetBoost : MonoBehaviour
             var move = other.gameObject.GetComponentInParent<CarMove3>();
             if (move.BoostQuantity >= 100) return;
 
-            if (BoostObjType == 1)
+            if (move.IsOnline)
             {
-                move.GetBoostMini();
+                if (BoostObjType == 1)
+                {
+                    move.GetBoostMini();
+                }
+                else
+                {
+                    move.GetBoostMax();
+                }
+                photonView.RPC(nameof(RpcGetBoost), RpcTarget.All);
             }
             else
             {
-                move.GetBoostMax();
+                if (BoostObjType == 1)
+                {
+                    move.GetBoostMini();
+                }
+                else
+                {
+                    move.GetBoostMax();
+                }
+                enable = false;
+                StartCoroutine(CoolDown());
             }
-            enable = false;
-            StartCoroutine(CoolDown());
         }
     }
 
@@ -81,5 +112,12 @@ public class GetBoost : MonoBehaviour
         _material.material = _yellow;
         enable = true;
         yield break;
+    }
+
+    [PunRPC]
+    private void RpcGetBoost()
+    {
+        enable = false;
+        StartCoroutine(CoolDown());
     }
 }
