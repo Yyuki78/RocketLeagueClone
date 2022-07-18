@@ -46,6 +46,7 @@ public class CarMove3 : MonoBehaviourPunCallbacks
         else
         { // それ以外のシーンでやりたい処理
             isOnline = true;
+            isMoving = false;
         }
         m_WheelMeshLocalRotations = new Quaternion[4];
         for (int i = 0; i < 4; i++)
@@ -325,6 +326,11 @@ public class CarMove3 : MonoBehaviourPunCallbacks
 
     public void Respown()
     {
+        Move(0, 0, 0, 0);
+        for (int i = 0; i < 4; i++)
+        {
+            m_WheelColliders[i].motorTorque = 0;
+        }
         m_Rigidbody.velocity = Vector3.zero;
         m_Rigidbody.angularVelocity = Vector3.zero;
         BoostQuantity = 33f;

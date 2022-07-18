@@ -30,13 +30,13 @@ public class CarParticleSystem : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        if (!_move.isMoving) return;
         if (_move.IsOnline)
         {
             if (photonView.IsMine)
             {
                 if (GameManager.InputManager.isBoost && _move.BoostQuantity != 0)
                 {
+                    if (!_move.isMoving) return;
                     BoostParticle.SetActive(true);
                 }
                 else

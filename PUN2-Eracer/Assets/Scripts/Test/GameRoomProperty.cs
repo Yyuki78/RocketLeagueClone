@@ -5,6 +5,7 @@ public static class GameRoomProperty
 {
     private const string KeyDisplayName = "DisplayName"; // 表示用ルーム名のキーの文字列
     private const string KeyStartTime = "StartTime"; // ゲーム開始時刻のキーの文字列
+    private const string KeyStopTime = "StopTime"; // ゲーム停止中のキーの文字列
 
     private static Hashtable hashtable = new Hashtable();
 
@@ -52,6 +53,27 @@ public static class GameRoomProperty
     public static void SetStartTime(this Room room, int timestamp)
     {
         hashtable[KeyStartTime] = timestamp;
+
+        room.SetCustomProperties(hashtable);
+        hashtable.Clear();
+    }
+
+    // ゲーム停止時間なら取得する
+    public static bool TryGetStopTime(this Room room, out int timestamp)
+    {
+        if (room.CustomProperties[KeyStopTime] is int value)
+        {
+            timestamp = value;
+            return true;
+        }
+        timestamp = 0;
+        return false;
+    }
+
+    // ゲーム停止時間を設定する
+    public static void SetStopTime(this Room room, int timestamp)
+    {
+        hashtable[KeyStopTime] = timestamp;
 
         room.SetCustomProperties(hashtable);
         hashtable.Clear();

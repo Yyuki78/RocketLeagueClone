@@ -101,12 +101,14 @@
     <Compile Include="Assets\Scripts\Online\BallDebug.cs" />
     <Compile Include="Assets\Scripts\Online\CarRpc.cs" />
     <Compile Include="Assets\Scripts\Online\GamePlayerProperty.cs" />
+    <Compile Include="Assets\Scripts\Online\GameRoomTimeDisplay.cs" />
     <Compile Include="Assets\Scripts\Online\OnlineGameManager.cs" />
     <Compile Include="Assets\Scripts\Online\OnlineGoalTrigger.cs" />
     <Compile Include="Assets\Scripts\Online\PhotonMatching1v1.cs" />
     <Compile Include="Assets\Scripts\Online\RequestBallOwner.cs" />
     <Compile Include="Assets\Scripts\PracticeButtons.cs" />
     <Compile Include="Assets\Scripts\PracticeEscKey.cs" />
+    <Compile Include="Assets\Scripts\Test\CountdownText.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayer.cs" />
     <Compile Include="Assets\Scripts\Test\GamePlayerManager.cs" />
     <Compile Include="Assets\Scripts\Test\GameRoomHUD.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Assets\Scripts\Test\Projectile.cs" />
     <Compile Include="Assets\Scripts\Test\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Test\SampleScene.cs" />
+    <Compile Include="Assets\Scripts\Test\ScoreText.cs" />
     <Compile Include="Assets\Scripts\Title\GoPracticeButton.cs" />
     <Compile Include="Assets\Scripts\WheelForce.cs" />
     <Compile Include="Assets\Scripts\WheelForce2.cs" />

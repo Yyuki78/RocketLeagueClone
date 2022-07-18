@@ -14,6 +14,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     private GameObject myCar;
     private PhotonView _view;
     private CarRpc _rpc;
+    private CarMove3 _move;
 
     private ChangeCarColor _changeColor;
 
@@ -27,6 +28,17 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject BallFallPoint;
 
     private bool startCol = false;
+
+    public bool isCountdown = false;
+
+    
+    private float elapsedTime;
+    private float stoppingTime;
+    private float StopTime = 0f;
+    private float DisplayTime;
+
+    public float DisplayMinutes;
+    public float DisplaySeconds;
 
     // Start is called before the first frame update
     void Awake()
@@ -44,13 +56,22 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = "2P";
         }
         myCar = PhotonNetwork.Instantiate("RocketCar1v1", pos, rotate);
+
+        /*
+        // ルームを作成したプレイヤーは、現在のサーバー時刻をゲームの開始時刻に設定する
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetStartTime(PhotonNetwork.ServerTimestamp);
+        }*/
     }
 
     private void Start()
     {
         _view = myCar.GetComponent<PhotonView>();
         _rpc = myCar.GetComponent<CarRpc>();
+        _move = myCar.GetComponent<CarMove3>();
         _ballRigidbody = Ball.GetComponent<Rigidbody>();
+        StartCoroutine(StartCountdown());
     }
 
     // Update is called once per frame
@@ -63,10 +84,48 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
                 startCol = true;
                 StartCoroutine(GoalEffect());
             }
+
+            if (!PhotonNetwork.CurrentRoom.TryGetStopTime(out int timestamp)) { return; }
+            stoppingTime = Mathf.Max(0f, unchecked(PhotonNetwork.ServerTimestamp - timestamp) / 1000f);
+        }
+        else
+        {
+            // まだルームに参加していない場合は更新しない
+            if (!PhotonNetwork.InRoom) { return; }
+            // まだゲームの開始時刻が設定されていない場合は更新しない
+            if (!PhotonNetwork.CurrentRoom.TryGetStartTime(out int timestamp)) { return; }
+
+            // ゲームの経過時間を求める
+            elapsedTime = Mathf.Max(0f, unchecked(PhotonNetwork.ServerTimestamp - timestamp) / 1000f);
+            DisplayTime = 300 + StopTime - elapsedTime;
+            DisplayMinutes = (int)DisplayTime / 60;
+            DisplaySeconds = (int)DisplayTime % 60;
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                PhotonNetwork.CurrentRoom.SetStopTime(PhotonNetwork.ServerTimestamp);
+            }
         }
     }
 
-    private IEnumerator GoalEffect()
+    private IEnumerator StartCountdown()
+    {
+        DisplayMinutes = 5;
+        DisplaySeconds = 0;
+        yield return new WaitForSeconds(1f);
+        isCountdown = true;
+        yield return new WaitForSeconds(3.3f);
+        _move.isMoving = true;
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetStartTime(PhotonNetwork.ServerTimestamp);
+        }
+
+        yield break;
+    }
+
+        private IEnumerator GoalEffect()
     {
         Time.timeScale = 0.25f;
         //爆発演出
@@ -86,11 +145,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
         Ball.SetActive(false);
-        yield return new WaitForSeconds(0.2f);
-
-        //リスタート
-        isGoalBlue = false;
-        isGoalRed = false;
+        yield return new WaitForSeconds(0.1f);
 
         Ball.SetActive(true);
         BallFallPoint.SetActive(true);
@@ -98,11 +153,32 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
 
+        _move.isMoving = false;
+        _move.Respown();
+        yield return new WaitForSeconds(0.1f);
+
+        _move.isMoving = false;
+        _move.Respown();
         _rpc.Respawn();
+        yield return new WaitForSeconds(0.1f);
+        _move.Respown();
+
+        isCountdown = true;
 
         //カウントダウン
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(3.3f);
         startCol = false;
+
+        //リスタート
+        isGoalBlue = false;
+        isGoalRed = false;
+
+        yield return new WaitForSeconds(0.05f);
+
+        isCountdown = false;
+
+        StopTime = StopTime + stoppingTime;
+        yield return new WaitForSeconds(0.05f);
 
         yield break;
     }

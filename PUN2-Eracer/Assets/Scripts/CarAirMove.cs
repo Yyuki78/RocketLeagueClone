@@ -35,6 +35,7 @@ public class CarAirMove : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        if (!_move.isMoving) return;
         if (_move.IsOnline)
         {
             if (photonView.IsMine)
@@ -68,6 +69,7 @@ public class CarAirMove : MonoBehaviourPunCallbacks
 
     private void FixedUpdate()
     {
+        if (!_move.isMoving) return;
         if (_move.IsOnline)
         {
             if (photonView.IsMine)

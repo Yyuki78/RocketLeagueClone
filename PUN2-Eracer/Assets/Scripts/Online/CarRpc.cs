@@ -42,60 +42,60 @@ public class CarRpc : MonoBehaviourPunCallbacks
             case 1:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    pos = new Vector3(77.5f, 9.5f, 2.5f);
+                    pos = new Vector3(77.5f, 9.75f, 2.5f);
                     rotate = Quaternion.Euler(0, 45, 0);
                 }
                 else
                 {
-                    pos = new Vector3(122.5f, 9.5f, 57.5f);
+                    pos = new Vector3(122.5f, 9.75f, 57.5f);
                     rotate = Quaternion.Euler(0, 225, 0);
                 }
                 break;
             case 2:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    pos = new Vector3(100, 9.5f, -20);
+                    pos = new Vector3(100, 9.75f, -20);
                     rotate = Quaternion.Euler(0, 0, 0);
                 }
                 else
                 {
-                    pos = new Vector3(100, 9.5f, 80);
+                    pos = new Vector3(100, 9.75f, 80);
                     rotate = Quaternion.Euler(0, 180, 0);
                 }
                 break;
             case 3:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    pos = new Vector3(122.5f, 9.5f, 2.5f);
+                    pos = new Vector3(122.5f, 9.75f, 2.5f);
                     rotate = Quaternion.Euler(0, -45, 0);
                 }
                 else
                 {
-                    pos = new Vector3(77.5f, 9.5f, 57.5f);
+                    pos = new Vector3(77.5f, 9.75f, 57.5f);
                     rotate = Quaternion.Euler(0, -225, 0);
                 }
                 break;
             case 4:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    pos = new Vector3(97, 9.5f, -10);
+                    pos = new Vector3(97, 9.75f, -10);
                     rotate = Quaternion.Euler(0, 0, 0);
                 }
                 else
                 {
-                    pos = new Vector3(103, 9.5f, 70);
+                    pos = new Vector3(103, 9.75f, 70);
                     rotate = Quaternion.Euler(0, 180, 0);
                 }
                 break;
             case 5:
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    pos = new Vector3(103, 9.5f, -10);
+                    pos = new Vector3(103, 9.75f, -10);
                     rotate = Quaternion.Euler(0, 0, 0);
                 }
                 else
                 {
-                    pos = new Vector3(97, 9.5f, 70);
+                    pos = new Vector3(97, 9.75f, 70);
                     rotate = Quaternion.Euler(0, 180, 0);
                 }
                 break;
