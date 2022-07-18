@@ -101,10 +101,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
             DisplayMinutes = (int)DisplayTime / 60;
             DisplaySeconds = (int)DisplayTime % 60;
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                PhotonNetwork.CurrentRoom.SetStopTime(PhotonNetwork.ServerTimestamp);
-            }
+            PhotonNetwork.CurrentRoom.SetStopTime(PhotonNetwork.ServerTimestamp);
         }
     }
 
@@ -147,8 +144,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         Ball.SetActive(false);
         yield return new WaitForSeconds(0.1f);
 
-        Ball.SetActive(true);
-        BallFallPoint.SetActive(true);
+        
         //偶にラグでリセットされてない時があるので二回
         _ballRigidbody.velocity = Vector3.zero;
         _ballRigidbody.angularVelocity = Vector3.zero;
@@ -165,20 +161,24 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
 
         isCountdown = true;
 
+        Ball.SetActive(true);
+        BallFallPoint.SetActive(true);
+
         //カウントダウン
         yield return new WaitForSeconds(3.3f);
-        startCol = false;
+
+        StopTime = StopTime + stoppingTime;
+
+        yield return new WaitForSeconds(0.05f);
+
+        isCountdown = false;
 
         //リスタート
         isGoalBlue = false;
         isGoalRed = false;
 
         yield return new WaitForSeconds(0.05f);
-
-        isCountdown = false;
-
-        StopTime = StopTime + stoppingTime;
-        yield return new WaitForSeconds(0.05f);
+        startCol = false;
 
         yield break;
     }
