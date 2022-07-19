@@ -40,6 +40,8 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     public float DisplayMinutes;
     public float DisplaySeconds;
 
+    [SerializeField] GameObject ResultPanel;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -102,6 +104,12 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
             DisplaySeconds = (int)DisplayTime % 60;
 
             PhotonNetwork.CurrentRoom.SetStopTime(PhotonNetwork.ServerTimestamp);
+        }
+        if (DisplayTime <= 0)
+        {
+            //ゲーム終了
+            Time.timeScale = 0f;
+            ResultPanel.SetActive(true);
         }
     }
 
