@@ -2103,6 +2103,75 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   once: 1
+--- !u!1001 &2147324982096074808
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 4040353284716525411}
+    m_Modifications:
+    - target: {fileID: 2147324981418059205, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_Name
+      value: SoundSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2147324981418059206, guid: 8111ad8aafc0fc946b594bd7214870fe,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8111ad8aafc0fc946b594bd7214870fe, type: 3}
 --- !u!1 &3063452448423869636
 GameObject:
   m_ObjectHideFlags: 0
@@ -16629,6 +16698,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6324966603282039207}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &4040353284716525411 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8058343236508956411, guid: cf608036dd581824f9331cb48232e28f,
+    type: 3}
+  m_PrefabInstance: {fileID: 6324966603282039207}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4773874151194224810
 Transform:
   m_ObjectHideFlags: 0
@@ -16718,7 +16793,7 @@ PrefabInstance:
     - target: {fileID: 8058343236508956413, guid: cf608036dd581824f9331cb48232e28f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf608036dd581824f9331cb48232e28f, type: 3}
@@ -17074,8 +17149,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8243955471736561735}
-  m_LocalRotation: {x: -0.004982321, y: 0.037420727, z: 0.00018657507, w: 0.9992872}
-  m_LocalPosition: {x: -0.6592102, y: -10.200546, z: 17.952248}
+  m_LocalRotation: {x: -0.006159211, y: 0.03730089, z: 0.00022990844, w: 0.9992851}
+  m_LocalPosition: {x: -0.65800476, y: -10.212322, z: 17.95229}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8243955470761349702}
