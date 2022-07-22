@@ -27,7 +27,6 @@ public class WheelTrigger : MonoBehaviour
         _move = GetComponentInParent<CarMove2>();
         _rigidbody = GetComponentInParent<Rigidbody>();
         _rayLen = transform.localScale.x / 2 + _rayOffset;
-        _rayLen = 0.3f;
     }
 
     private void FixedUpdate()
@@ -87,7 +86,7 @@ public class WheelTrigger : MonoBehaviour
 
     private bool IsRayContact()
     {
-        Debug.DrawRay(gameObject.transform.position, -transform.up, Color.red, _rayLen);
+        //Debug.DrawRay(gameObject.transform.position, -transform.up, Color.red, _rayLen);
         var isHit = Physics.Raycast(transform.position, -transform.up, out var hit, _rayLen);
         _rayContactPoint = hit.point;
         _rayContactNormal = hit.normal;
@@ -96,11 +95,13 @@ public class WheelTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.layer == 11) return;
         HittingCol = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.gameObject.layer == 11) return;
         HittingCol = false;
     }
 }

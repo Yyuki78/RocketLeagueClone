@@ -8,12 +8,15 @@ public class BodyTrigger : MonoBehaviour
 
     [SerializeField] float _rayLen, _rayOffset = 0.05f;
 
+    public bool hitBall = false;
+    public bool hitGround = false;
+
     // Start is called before the first frame update
     void Start()
     {
         _state = GetComponentInParent<CarState>();
         _rayLen = transform.localScale.x / 2 + _rayOffset;
-        _rayLen = 0.3f;
+        //_rayLen = 0.3f;
     }
 
     private void Update()
@@ -24,13 +27,20 @@ public class BodyTrigger : MonoBehaviour
     private bool IsRayContact()
     {
         var isHit = Physics.Raycast(transform.position, transform.up, out var hit, _rayLen);
-        Debug.DrawRay(gameObject.transform.position, transform.up, Color.blue, _rayLen);
+        //Debug.DrawRay(gameObject.transform.position, transform.up, Color.blue, _rayLen);
         return false || isHit;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //_state.BodyHitting = true;
+        if (other.gameObject.layer == 10)
+        {
+            hitGround = true;
+        }
+        if (other.gameObject.layer == 9)
+        {
+            hitBall = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)

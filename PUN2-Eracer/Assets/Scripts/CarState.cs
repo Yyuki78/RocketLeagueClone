@@ -143,7 +143,7 @@ public class CarState : MonoBehaviour
     {
         //ドライブ可能でないor逆さまなら無効
         if (!IsDrive) return;
-        if (Vector3.Dot(-Vector3.up, transform.up) > 0.98f) return;
+        if (Vector3.Dot(-Vector3.up, transform.up) > 0.9f) return;
         _rigidbody.AddForce(-transform.up * 100 * 5);
     }
 }
