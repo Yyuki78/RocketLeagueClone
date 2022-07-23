@@ -270,16 +270,20 @@ public class CarMove3 : MonoBehaviourPunCallbacks
                 {
                     driftSteerTime += Time.deltaTime;
                 }
+                else
+                {
+                    driftSteerTime = 3f;
+                }
             }
             else
             {
                 driftSteerTime = 0f;
             }
 
-            sFriction.extremumSlip = 1f + (driftSteerTime / 3 * 1);//最大2
-            sFriction.extremumValue = 30f - (driftSteerTime / 3 * 20);//最小10
+            sFriction.extremumSlip = 1.5f + (driftSteerTime / 3 * 0.5f);//最大2
+            sFriction.extremumValue = 20f - (driftSteerTime / 3 * 10);//最小10
 
-            Spring.spring = 11500 - (driftSteerTime / 3 * 9000);//最小2500
+            Spring.spring = 9500 - (driftSteerTime / 3 * 7000);//最小2500
         }
         else
         {

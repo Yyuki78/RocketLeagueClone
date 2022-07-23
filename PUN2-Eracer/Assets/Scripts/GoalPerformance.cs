@@ -20,12 +20,17 @@ public class GoalPerformance : MonoBehaviour
     private bool startCol = false;
     private Quaternion CarRotation;
 
+    private AudioSource _audio;
+    [SerializeField] AudioClip _clip1;
+    [SerializeField] AudioClip _clip2;
+
     // Start is called before the first frame update
     void Start()
     {
         _ballRigidbody = Ball.GetComponent<Rigidbody>();
         _carRigidbody = MyCar.GetComponent<Rigidbody>();
         _move = MyCar.GetComponent<CarMove3>();
+        _audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -45,15 +50,18 @@ public class GoalPerformance : MonoBehaviour
     {
         Time.timeScale = 0.25f;
         //爆発演出
-        var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
+        var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity);
 
         Ball.SetActive(false);
         BallFallPoint.SetActive(false);
+        this.gameObject.transform.position = Ball.transform.position;
 
         yield return new WaitForSeconds(0.1f);
         Time.timeScale = 1.0f;
-        yield return new WaitForSeconds(1.8f);
-        yield return new WaitForSeconds(0.8f);
+        _audio.PlayOneShot(_clip1);
+        yield return new WaitForSeconds(0.4f);
+        _audio.PlayOneShot(_clip2);
+        yield return new WaitForSeconds(2.2f);
         Destroy(explosion);
         //リセット
         Ball.transform.position = new Vector3(100f, 10.4f, 30f);

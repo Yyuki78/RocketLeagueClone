@@ -12,6 +12,13 @@ public class BallEffect : MonoBehaviour
     [SerializeField] Gradient _gradient;
     [SerializeField] Gradient _offGradient;
 
+    [SerializeField] AudioSource _audio1;
+    [SerializeField] AudioSource _audio2;
+    [SerializeField] AudioClip _clip1;
+    [SerializeField] AudioClip _clip2;
+    private bool once = true;
+    private bool once2 = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,5 +44,43 @@ public class BallEffect : MonoBehaviour
         {
             BallTrail.SetActive(false);
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == 10)
+        {
+            _audio1.volume = _rigidbody.velocity.magnitude / (23f * 8f);
+            if (once)
+            {
+                _audio1.PlayOneShot(_clip1);
+                once = false;
+                StartCoroutine(ResetSE());
+            }
+        }
+
+        if (collision.gameObject.layer == 8)
+        {
+            var _rigid = collision.gameObject.GetComponent<Rigidbody>();
+            _audio2.volume = 0.05f + (_rigidbody.velocity.magnitude + _rigid.velocity.magnitude) / (23f * 10f);
+            if (once2)
+            {
+                _audio2.PlayOneShot(_clip2);
+                once2 = false;
+                StartCoroutine(ResetSE2());
+            }
+        }
+    }
+
+    private IEnumerator ResetSE()
+    {
+        yield return new WaitForSeconds(0.1f);
+        once = true;
+    }
+
+    private IEnumerator ResetSE2()
+    {
+        yield return new WaitForSeconds(0.1f);
+        once2 = true;
     }
 }

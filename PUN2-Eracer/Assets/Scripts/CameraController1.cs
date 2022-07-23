@@ -23,6 +23,10 @@ public class CameraController1 : MonoBehaviour
 
     private bool waitRag = true;
 
+    private AudioSource _audio;
+    [SerializeField] AudioClip _clip;
+    private bool once = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +44,11 @@ public class CameraController1 : MonoBehaviour
             _ballCamera.Priority = 10;
             if (Mode == 0)
                 CameraText.SetActive(true);
+            if (once)
+            {
+                once = false;
+                _audio.PlayOneShot(_clip);
+            }
         }
         else
         {
@@ -47,6 +56,11 @@ public class CameraController1 : MonoBehaviour
             _ballCamera.Priority = 5;
             if (Mode == 0)
                 CameraText.SetActive(false);
+            if (!once)
+            {
+                once = true;
+                _audio.PlayOneShot(_clip);
+            }
         }
         /*
         _carCameraTransform.transform.position = _carLocalTransform.position + new Vector3(0, 1, -3f);
@@ -81,6 +95,7 @@ public class CameraController1 : MonoBehaviour
             cinemachineTargetGroup = GetComponentInChildren<CinemachineTargetGroup>();
             cinemachineTargetGroup.AddMember(RocketCar.transform, 1, 1);
         }
+        _audio = GetComponent<AudioSource>();
         waitRag = false;
     }
 }

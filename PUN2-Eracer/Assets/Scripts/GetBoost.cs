@@ -16,11 +16,15 @@ public class GetBoost : MonoBehaviourPunCallbacks
 
     [SerializeField] GameObject _MaxBoostBall;
 
+    private AudioSource _audio;
+    [SerializeField] AudioClip _clip;
+
     // Start is called before the first frame update
     void Start()
     {
         _material = GetComponent<MeshRenderer>();
         _material.material = _yellow;
+        _audio = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,6 +37,7 @@ public class GetBoost : MonoBehaviourPunCallbacks
 
             if (move.IsOnline)
             {
+                _audio.PlayOneShot(_clip);
                 if (BoostObjType == 1)
                 {
                     move.GetBoostMini();
@@ -45,6 +50,7 @@ public class GetBoost : MonoBehaviourPunCallbacks
             }
             else
             {
+                _audio.PlayOneShot(_clip);
                 if (BoostObjType == 1)
                 {
                     move.GetBoostMini();
@@ -69,6 +75,7 @@ public class GetBoost : MonoBehaviourPunCallbacks
 
             if (move.IsOnline)
             {
+                _audio.PlayOneShot(_clip);
                 if (BoostObjType == 1)
                 {
                     move.GetBoostMini();
@@ -81,6 +88,7 @@ public class GetBoost : MonoBehaviourPunCallbacks
             }
             else
             {
+                _audio.PlayOneShot(_clip);
                 if (BoostObjType == 1)
                 {
                     move.GetBoostMini();
