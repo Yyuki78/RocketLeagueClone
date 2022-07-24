@@ -107,7 +107,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
 
             // ゲームの経過時間を求める
             elapsedTime = Mathf.Max(0f, unchecked(PhotonNetwork.ServerTimestamp - timestamp) / 1000f);
-            DisplayTime = 300 + StopTime - elapsedTime;
+            DisplayTime = 30 + StopTime - elapsedTime;
             DisplayMinutes = (int)DisplayTime / 60;
             DisplaySeconds = (int)DisplayTime % 60;
 
@@ -116,8 +116,14 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         if (DisplayTime <= 0)
         {
             //ゲーム終了
-            Time.timeScale = 0f;
+            Time.timeScale = 1f;
             ResultPanel.SetActive(true);
+            _move.isMoving = false;
+            var rigid = myCar.GetComponent<Rigidbody>();
+            rigid.isKinematic = true;
+            rigid.useGravity = false;
+            _ballRigidbody.isKinematic = true;
+            _ballRigidbody.useGravity = false;
         }
     }
 

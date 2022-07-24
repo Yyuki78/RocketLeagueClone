@@ -35,6 +35,13 @@ public class PracticeEscKey : MonoBehaviour
 
     public void ClickTitleButton()
     {
+        isStop = !isStop;
+        SceneManager.LoadScene("TitleScene");
+    }
+
+    private IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(0.1f);
         SceneManager.LoadScene("TitleScene");
     }
 }

@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\ChangeCarColor.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GetBoost.cs" />
+    <Compile Include="Assets\Scripts\GoTitleButton.cs" />
     <Compile Include="Assets\Scripts\GoalPerformance.cs" />
     <Compile Include="Assets\Scripts\GoalTrigger.cs" />
     <Compile Include="Assets\Scripts\HintText.cs" />

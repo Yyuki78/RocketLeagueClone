@@ -19,6 +19,16 @@ public class PhotonMatching1v1 : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     private void Start()
     {
+        /*if (PhotonNetwork.IsConnected)
+        {
+            Debug.Log("切断します");
+            PhotonNetwork.Disconnect();
+            PhotonNetwork.Reconnect();
+        }
+        else
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }*/
         PhotonNetwork.ConnectUsingSettings();
     }
 

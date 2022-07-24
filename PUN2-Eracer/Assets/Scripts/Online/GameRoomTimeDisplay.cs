@@ -9,6 +9,8 @@ public class GameRoomTimeDisplay : MonoBehaviour
 
     private TextMeshProUGUI timeLabel;
 
+    private bool isEnd = false;
+
     private void Start()
     {
         _manager = GameManager.GetComponent<OnlineGameManager>();
@@ -17,6 +19,17 @@ public class GameRoomTimeDisplay : MonoBehaviour
 
     private void Update()
     {
-        timeLabel.text = "残り時間:" + _manager.DisplayMinutes.ToString("0") + ":" + _manager.DisplaySeconds.ToString("00");
+        if (_manager.DisplayMinutes == 0 && _manager.DisplaySeconds == 0)
+        {
+            isEnd = true;
+        }
+        if (isEnd)
+        {
+            timeLabel.text = "0:00";
+        }
+        else
+        {
+            timeLabel.text = "" + _manager.DisplayMinutes.ToString("0") + ":" + _manager.DisplaySeconds.ToString("00");
+        }
     }
 }
