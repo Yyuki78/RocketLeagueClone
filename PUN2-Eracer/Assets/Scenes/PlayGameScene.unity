@@ -1481,6 +1481,7 @@ GameObject:
   - component: {fileID: 1678559132}
   - component: {fileID: 1678559131}
   - component: {fileID: 1678559134}
+  - component: {fileID: 1678559135}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1555,10 +1556,109 @@ MonoBehaviour:
   Ball: {fileID: 1552109317938919746}
   Explosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 3}
   BallFallPoint: {fileID: 1128226847}
+  _clip1: {fileID: 8300000, guid: b863b54a66df3044d98b2c7691aae38a, type: 3}
+  _clip2: {fileID: 8300000, guid: cd8827649adc9d447b92964e9679f74f, type: 3}
+  _clip3: {fileID: 8300000, guid: 21a3ea4b143ecb34eb0b6562a77ad40b, type: 3}
   isCountdown: 0
   DisplayMinutes: 0
   DisplaySeconds: 0
   ResultPanel: {fileID: 1504069179}
+--- !u!82 &1678559135
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678559130}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.002
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.3
+      value: 0
+      inSlope: -1.002004
+      outSlope: -1.002004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1799985296 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4446518292299113131, guid: daad237b66c294a44870325ad60af2c4,
@@ -2108,7 +2208,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2245,7 +2345,7 @@ AudioSource:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.4
+      time: 0.8
       value: 0
       inSlope: -1.010101
       outSlope: -1.010101
@@ -2336,7 +2436,7 @@ GameObject:
   - component: {fileID: 3917481903101568973}
   m_Layer: 0
   m_Name: miniBoost3
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2652,7 +2752,7 @@ GameObject:
   - component: {fileID: 3917481903122345681}
   m_Layer: 0
   m_Name: miniBoost28
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2878,7 +2978,7 @@ GameObject:
   - component: {fileID: 3917481903133880009}
   m_Layer: 0
   m_Name: miniBoost21
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3032,7 +3132,7 @@ GameObject:
   - component: {fileID: 3917481903187705765}
   m_Layer: 0
   m_Name: miniBoost4
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3325,7 +3425,7 @@ GameObject:
   - component: {fileID: 3917481903189628873}
   m_Layer: 0
   m_Name: miniBoost27
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4313,7 +4413,7 @@ GameObject:
   - component: {fileID: 3917481903461755873}
   m_Layer: 0
   m_Name: miniBoost20
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4467,7 +4567,7 @@ GameObject:
   - component: {fileID: 3917481903507071605}
   m_Layer: 0
   m_Name: miniBoost17
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4760,7 +4860,7 @@ GameObject:
   - component: {fileID: 3917481903507855001}
   m_Layer: 0
   m_Name: miniBoost25
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4970,7 +5070,7 @@ GameObject:
   - component: {fileID: 3917481903569254789}
   m_Layer: 0
   m_Name: BigBoost2
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5640,7 +5740,7 @@ GameObject:
   - component: {fileID: 3917481903814256309}
   m_Layer: 0
   m_Name: BigBoost5
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5962,7 +6062,7 @@ GameObject:
   - component: {fileID: 3917481903896318089}
   m_Layer: 0
   m_Name: miniBoost14
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6147,7 +6247,7 @@ GameObject:
   - component: {fileID: 3917481903956092501}
   m_Layer: 0
   m_Name: miniBoost5
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6379,7 +6479,7 @@ GameObject:
   - component: {fileID: 3917481903968432229}
   m_Layer: 0
   m_Name: BigBoost1
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6612,7 +6712,7 @@ GameObject:
   - component: {fileID: 3917481904004268917}
   m_Layer: 0
   m_Name: miniBoost2
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7046,7 +7146,7 @@ GameObject:
   - component: {fileID: 3917481904171165133}
   m_Layer: 0
   m_Name: miniBoost9
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7362,7 +7462,7 @@ GameObject:
   - component: {fileID: 3917481904206390945}
   m_Layer: 0
   m_Name: miniBoost8
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7602,7 +7702,7 @@ GameObject:
   - component: {fileID: 3917481904318845757}
   m_Layer: 0
   m_Name: BigBoost3
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7851,7 +7951,7 @@ GameObject:
   - component: {fileID: 3917481904323673269}
   m_Layer: 0
   m_Name: miniBoost26
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8161,7 +8261,7 @@ GameObject:
   - component: {fileID: 3917481904327243377}
   m_Layer: 0
   m_Name: miniBoost18
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8423,7 +8523,7 @@ GameObject:
   - component: {fileID: 3917481904403408845}
   m_Layer: 0
   m_Name: miniBoost12
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8655,7 +8755,7 @@ GameObject:
   - component: {fileID: 3917481904472684909}
   m_Layer: 0
   m_Name: BigBoost6
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8935,7 +9035,7 @@ GameObject:
   - component: {fileID: 3917481904475698953}
   m_Layer: 0
   m_Name: miniBoost24
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9181,7 +9281,7 @@ GameObject:
   - component: {fileID: 3917481904482082953}
   m_Layer: 0
   m_Name: miniBoost11
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9430,7 +9530,7 @@ GameObject:
   - component: {fileID: 3917481904569961617}
   m_Layer: 0
   m_Name: miniBoost7
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9631,7 +9731,7 @@ GameObject:
   - component: {fileID: 3917481904662864969}
   m_Layer: 0
   m_Name: miniBoost10
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10073,7 +10173,7 @@ GameObject:
   - component: {fileID: 3917481904744426169}
   m_Layer: 0
   m_Name: miniBoost6
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10221,7 +10321,7 @@ GameObject:
   - component: {fileID: 3917481904755614733}
   m_Layer: 0
   m_Name: miniBoost19
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10577,7 +10677,7 @@ GameObject:
   - component: {fileID: 3917481904795869749}
   m_Layer: 0
   m_Name: miniBoost16
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10809,7 +10909,7 @@ GameObject:
   - component: {fileID: 3917481904803562733}
   m_Layer: 0
   m_Name: miniBoost22
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18497,7 +18597,7 @@ GameObject:
   - component: {fileID: 3917481904935171721}
   m_Layer: 0
   m_Name: miniBoost23
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18940,7 +19040,7 @@ GameObject:
   - component: {fileID: 3917481904985096905}
   m_Layer: 0
   m_Name: miniBoost15
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19544,7 +19644,7 @@ GameObject:
   - component: {fileID: 3917481905158382889}
   m_Layer: 0
   m_Name: BigBoost4
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19731,7 +19831,7 @@ GameObject:
   - component: {fileID: 3917481905172082865}
   m_Layer: 0
   m_Name: miniBoost1
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20008,7 +20108,7 @@ GameObject:
   - component: {fileID: 3917481905181771889}
   m_Layer: 0
   m_Name: miniBoost13
-  m_TagString: Untagged
+  m_TagString: Boost
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20180,6 +20280,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8058343236508956410, guid: cf608036dd581824f9331cb48232e28f,
+        type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8058343236508956411, guid: cf608036dd581824f9331cb48232e28f,
         type: 3}
       propertyPath: m_RootOrder
@@ -20697,8 +20802,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8243955471736561735}
-  m_LocalRotation: {x: -0.004982504, y: 0.037420817, z: 0.00018658239, w: 0.9992872}
-  m_LocalPosition: {x: -0.6592102, y: -10.200547, z: 17.952248}
+  m_LocalRotation: {x: -0.0049823252, y: 0.037420712, z: 0.00018657517, w: 0.9992872}
+  m_LocalPosition: {x: -0.6592102, y: -10.200546, z: 17.952248}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8243955470761349702}

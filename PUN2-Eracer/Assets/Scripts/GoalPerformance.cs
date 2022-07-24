@@ -24,6 +24,8 @@ public class GoalPerformance : MonoBehaviour
     [SerializeField] AudioClip _clip1;
     [SerializeField] AudioClip _clip2;
 
+    private GetBoost[] _boost = new GetBoost[34];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,14 @@ public class GoalPerformance : MonoBehaviour
         _carRigidbody = MyCar.GetComponent<Rigidbody>();
         _move = MyCar.GetComponent<CarMove3>();
         _audio = GetComponent<AudioSource>();
+
+        int i = 0;
+        foreach (GetBoost boostObj in _boost)
+        {
+            var BoostObj = GameObject.FindGameObjectsWithTag("Boost");
+            _boost[i] = BoostObj[i].GetComponent<GetBoost>();
+            i++;
+        }
     }
 
     // Update is called once per frame
@@ -114,7 +124,11 @@ public class GoalPerformance : MonoBehaviour
         MyCar.transform.rotation = CarRotation;
         _move.Respown();
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
+        for(int i = 0; i < 34; i++)
+            _boost[i].Reset();
+
+        yield return new WaitForSeconds(0.1f);
         startCol = false;
 
         yield break;

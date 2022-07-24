@@ -27,6 +27,11 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject Explosion;
     [SerializeField] GameObject BallFallPoint;
 
+    private AudioSource _audio;
+    [SerializeField] AudioClip _clip1;
+    [SerializeField] AudioClip _clip2;
+    [SerializeField] AudioClip _clip3;
+
     private bool startCol = false;
 
     public bool isCountdown = false;
@@ -41,6 +46,8 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     public float DisplaySeconds;
 
     [SerializeField] GameObject ResultPanel;
+
+    private GetBoost[] _boost = new GetBoost[34];
 
     // Start is called before the first frame update
     void Awake()
@@ -73,6 +80,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         _rpc = myCar.GetComponent<CarRpc>();
         _move = myCar.GetComponent<CarMove3>();
         _ballRigidbody = Ball.GetComponent<Rigidbody>();
+        _audio = GetComponent<AudioSource>();
         StartCoroutine(StartCountdown());
     }
 
@@ -117,9 +125,22 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     {
         DisplayMinutes = 5;
         DisplaySeconds = 0;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+        int i = 0;
+        foreach (GetBoost boostObj in _boost)
+        {
+            var BoostObj = GameObject.FindGameObjectsWithTag("Boost");
+            _boost[i] = BoostObj[i].GetComponent<GetBoost>();
+            i++;
+        }
+        yield return new WaitForSeconds(0.5f);
         isCountdown = true;
-        yield return new WaitForSeconds(3.3f);
+
+        yield return new WaitForSeconds(0.3f);
+        this.gameObject.transform.position = Ball.transform.position;
+        _audio.volume = 0.1f;
+        _audio.PlayOneShot(_clip3);
+        yield return new WaitForSeconds(3.0f);
         _move.isMoving = true;
 
         if (PhotonNetwork.IsMasterClient)
@@ -134,15 +155,19 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
     {
         Time.timeScale = 0.25f;
         //爆発演出
-        var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity, this.gameObject.transform);
+        var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity);
 
         Ball.SetActive(false);
         BallFallPoint.SetActive(false);
+        this.gameObject.transform.position = Ball.transform.position;
 
         yield return new WaitForSeconds(0.1f);
         Time.timeScale = 1.0f;
-        yield return new WaitForSeconds(1.8f);
-        yield return new WaitForSeconds(0.8f);
+        _audio.volume = 0.3f;
+        _audio.PlayOneShot(_clip1);
+        yield return new WaitForSeconds(0.4f);
+        _audio.PlayOneShot(_clip2);
+        yield return new WaitForSeconds(2.2f);
         Destroy(explosion);
         //リセット
         Ball.transform.position = new Vector3(100f, 10.4f, 30f);
@@ -172,8 +197,16 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         Ball.SetActive(true);
         BallFallPoint.SetActive(true);
 
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < 34; i++)
+            _boost[i].Reset();
+
         //カウントダウン
-        yield return new WaitForSeconds(3.3f);
+        yield return new WaitForSeconds(0.2f);
+        this.gameObject.transform.position = Ball.transform.position;
+        _audio.volume = 0.1f;
+        _audio.PlayOneShot(_clip3);
+        yield return new WaitForSeconds(3.0f);
 
         StopTime = StopTime + stoppingTime;
 

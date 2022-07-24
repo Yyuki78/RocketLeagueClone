@@ -110,11 +110,13 @@ public class GetBoost : MonoBehaviourPunCallbacks
         if (BoostObjType == 1)
         {
             yield return new WaitForSeconds(4f);
+            if (enable) yield break;
         }
         else
         {
             _MaxBoostBall.SetActive(false);
             yield return new WaitForSeconds(10f);
+            if (enable) yield break;
             _MaxBoostBall.SetActive(true);
         }
         _material.material = _yellow;
@@ -127,5 +129,17 @@ public class GetBoost : MonoBehaviourPunCallbacks
     {
         enable = false;
         StartCoroutine(CoolDown());
+    }
+
+    public void Reset()
+    {
+        Debug.Log("ブーストリセット");
+        if (BoostObjType != 1)
+        {
+            _MaxBoostBall.SetActive(true);
+            Debug.Log("大ブーストリセット");
+        }
+        _material.material = _yellow;
+        enable = true;
     }
 }

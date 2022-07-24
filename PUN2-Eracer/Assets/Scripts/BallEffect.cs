@@ -50,7 +50,7 @@ public class BallEffect : MonoBehaviour
     {
         if (collision.gameObject.layer == 10)
         {
-            _audio1.volume = _rigidbody.velocity.magnitude / (23f * 8f);
+            _audio1.volume = _rigidbody.velocity.magnitude / (23f * 6f);
             if (once)
             {
                 _audio1.PlayOneShot(_clip1);
@@ -81,6 +81,12 @@ public class BallEffect : MonoBehaviour
     private IEnumerator ResetSE2()
     {
         yield return new WaitForSeconds(0.1f);
+        once2 = true;
+    }
+
+    private void OnEnable()
+    {
+        once = true;
         once2 = true;
     }
 }
