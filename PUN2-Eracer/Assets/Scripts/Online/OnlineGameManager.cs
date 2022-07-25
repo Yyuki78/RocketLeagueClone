@@ -107,7 +107,7 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
 
             // ゲームの経過時間を求める
             elapsedTime = Mathf.Max(0f, unchecked(PhotonNetwork.ServerTimestamp - timestamp) / 1000f);
-            DisplayTime = 30 + StopTime - elapsedTime;
+            DisplayTime = 300 + StopTime - elapsedTime;
             DisplayMinutes = (int)DisplayTime / 60;
             DisplaySeconds = (int)DisplayTime % 60;
 
@@ -140,6 +140,17 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
             i++;
         }
         yield return new WaitForSeconds(0.5f);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetStartTime2(PhotonNetwork.ServerTimestamp);
+        }
+
+        while (!PhotonNetwork.CurrentRoom.HasStartTime2())
+        {
+            yield return null;
+        }
+
         isCountdown = true;
 
         yield return new WaitForSeconds(0.3f);
