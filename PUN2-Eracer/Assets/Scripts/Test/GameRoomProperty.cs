@@ -80,16 +80,25 @@ public static class GameRoomProperty
         hashtable.Clear();
     }
 
-    // ゲーム開始時刻が設定されているか調べる　最初のカウントダウン用
+    // ゲーム開始時刻が設定されているか調べる　カウントダウン同期用
     public static bool HasStartTime2(this Room room)
     {
         return room.CustomProperties.ContainsKey(KeyStartTime2);
     }
 
-    // ゲーム開始時間を設定する　最初のカウントダウン用
+    // ゲーム開始時間を設定する　カウントダウン同期用
     public static void SetStartTime2(this Room room, int timestamp)
     {
         hashtable[KeyStartTime2] = timestamp;
+
+        room.SetCustomProperties(hashtable);
+        hashtable.Clear();
+    }
+
+    // ゲーム開始時間を破棄する　カウントダウン同期用
+    public static void BreakingStartTime2(this Room room)
+    {
+        hashtable[KeyStartTime2] = null;
 
         room.SetCustomProperties(hashtable);
         hashtable.Clear();

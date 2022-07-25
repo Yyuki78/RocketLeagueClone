@@ -7,8 +7,8 @@ using Photon.Realtime;
 public class CarJumpMove : MonoBehaviourPunCallbacks
 {
     //威力調整用
-    [SerializeField] float jumpForceVal = 1f;
-    [SerializeField] float TorqueVal = 1f;
+    [SerializeField] float jumpForceVal = 1f;//オンラインかどうかで変わる(ラグのため)
+    private float TorqueVal = 40f;
     //入力量
     private float throttle, steer;
 

@@ -713,8 +713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ae4f52674e2f43a0d388358d7ba22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForceVal: 1
-  TorqueVal: 40
+  jumpForceVal: 0.75
   Jumping: 0
   SecondJumping: 0
   isJumping: 0

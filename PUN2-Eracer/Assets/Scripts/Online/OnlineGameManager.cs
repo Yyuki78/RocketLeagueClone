@@ -168,8 +168,12 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         yield break;
     }
 
-        private IEnumerator GoalEffect()
+    private IEnumerator GoalEffect()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.BreakingStartTime2();
+        }
         Time.timeScale = 0.25f;
         //爆発演出
         var explosion = Instantiate(Explosion, Ball.transform.position, Quaternion.identity);
@@ -214,16 +218,34 @@ public class OnlineGameManager : MonoBehaviourPunCallbacks
         Ball.SetActive(true);
         BallFallPoint.SetActive(true);
 
-        yield return new WaitForSeconds(0.1f);
+        //カウントダウン
+        yield return new WaitForSeconds(0.3f);
         for (int i = 0; i < 34; i++)
             _boost[i].Reset();
 
-        //カウントダウン
-        yield return new WaitForSeconds(0.2f);
+        //同期
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.CurrentRoom.SetStartTime2(PhotonNetwork.ServerTimestamp);
+        }
+
+        while (!PhotonNetwork.CurrentRoom.HasStartTime2())
+        {
+            yield return null;
+        }
+
         this.gameObject.transform.position = Ball.transform.position;
         _audio.volume = 0.1f;
         _audio.PlayOneShot(_clip3);
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(1.0f);
+
+        //車セット後に念のため
+        Ball.transform.position = new Vector3(100f, 10.4f, 30f);
+        Ball.transform.rotation = new Quaternion(0, 0, 0, 1);
+        _ballRigidbody.velocity = Vector3.zero;
+        _ballRigidbody.angularVelocity = Vector3.zero;
+
+        yield return new WaitForSeconds(2.0f);
 
         StopTime = StopTime + stoppingTime;
 

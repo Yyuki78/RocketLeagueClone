@@ -197,7 +197,6 @@ MonoBehaviour:
   WindParticle: {fileID: 1528210168149247797}
   JumpParticle: {fileID: 1528210168223397374}
   SteerParticles: {fileID: 457056452248552245}
-  RocketCar: {fileID: 1528210168204897502}
 --- !u!1 &1528210167932047034
 GameObject:
   m_ObjectHideFlags: 0
@@ -399,8 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ae4f52674e2f43a0d388358d7ba22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForceVal: 1
-  TorqueVal: 40
+  jumpForceVal: 0.9
   Jumping: 0
   SecondJumping: 0
   isJumping: 0
@@ -434,19 +432,14 @@ MonoBehaviour:
   - {fileID: 5450539745247496011}
   m_CentreOfMassOffset: {x: 0, y: -0.1, z: -0.1}
   m_MaximumSteerAngle: 12.5
-  m_SteerHelper: 0.644
   m_TractionControl: 0
   m_FullTorqueOverAllWheels: 11500
   m_ReverseTorque: 500
-  m_MaxHandbrakeTorque: 100000000
-  m_Downforce: 1000
-  m_SpeedType: 0
-  m_RevRangeBoundary: 1
-  m_SlipLimit: 0.3
   m_BrakeTorque: 12500
   m_Topspeed2: 22
   holdSpeed: 0
   BoostQuantity: 33
+  isMoving: 1
 --- !u!1 &1528210168450866704
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,6 +513,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rayLen: 0
   _rayOffset: 0.01
+  hitBall: 0
+  hitGround: 0
 --- !u!1 &1528210168804889673
 GameObject:
   m_ObjectHideFlags: 0

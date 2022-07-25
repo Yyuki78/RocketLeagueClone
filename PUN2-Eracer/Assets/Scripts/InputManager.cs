@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
         isDrift = Input.GetButton("LB") || Input.GetKey(KeyCode.LeftShift);
         isAirRoll = Input.GetButton("LB") || Input.GetKey(KeyCode.LeftShift);
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButton("X"))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("X"))
             isSwitchCamera = !isSwitchCamera;
     }
 
